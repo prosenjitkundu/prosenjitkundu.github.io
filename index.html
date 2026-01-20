@@ -1,193 +1,153 @@
-<!-- redeploy -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prosenjit Kundu | Backend Software Engineer</title>
-  <meta name="description" content="Backend / Full-Stack Software Engineer at BNY Mellon | Distributed Systems | GenAI | Kafka" />
+  <title>Prosenjit Kundu | Software Engineer</title>
 
-  <style>
-    :root {
-      --bg-primary: #020617;
-      --bg-secondary: #0f172a;
-      --card-bg: #020617;
-      --border: #1e293b;
-      --text-primary: #e5e7eb;
-      --text-secondary: #94a3b8;
-      --accent: #38bdf8;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
-      color: var(--text-primary);
-      line-height: 1.7;
-    }
-
-    a { color: var(--accent); text-decoration: none; }
-
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 48px 24px;
-    }
-
-    header {
-      margin-bottom: 72px;
-    }
-
-    header h1 {
-      font-size: 2.8rem;
-      margin-bottom: 12px;
-    }
-
-    header p {
-      max-width: 800px;
-      color: var(--text-secondary);
-      font-size: 1.05rem;
-    }
-
-    .links {
-      margin-top: 20px;
-    }
-
-    .links a {
-      margin-right: 16px;
-      font-weight: 500;
-    }
-
-    section {
-      margin-bottom: 72px;
-    }
-
-    section h2 {
-      font-size: 1.8rem;
-      margin-bottom: 24px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 8px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 20px;
-    }
-
-    .card h3 {
-      font-size: 1.2rem;
-      margin-bottom: 6px;
-    }
-
-    .meta {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      margin-bottom: 12px;
-    }
-
-    ul {
-      padding-left: 18px;
-    }
-
-    li {
-      margin-bottom: 10px;
-    }
-
-    footer {
-      border-top: 1px solid var(--border);
-      padding-top: 24px;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      text-align: center;
-    }
-  </style>
+  <!-- KEEP EXISTING COLORS & CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet" />
 </head>
 <body>
 
-  <div class="container">
+<!-- ================= HEADER ================= -->
+<header class="header-1">
+  <nav class="nav bd-grid">
+    <div class="nav_toggle" id="nav-toggle"><i class="bx bx-menu"></i></div>
+    <a href="#home" class="nav_logo">Prosenjit</a>
 
-    <!-- HERO / INTRO -->
-    <header>
-      <h1>Prosenjit Kundu</h1>
-      <p>
-        Backend / Full-Stack Software Engineer with 2.7+ years of experience building and operating scalable
-        Java & Spring Boot microservices for enterprise fintech platforms.
-        Currently working at BNY Mellon on AI Hub (ELIZA), delivering GenAI-powered systems with
-        Kafka-based asynchronous workflows and compliance-driven architectures.
-      </p>
-      <div class="links">
-        <a href="https://github.com/prosenjitkundu" target="_blank">GitHub</a>
-        <a href="https://linkedin.com/in/kundu-prosenjit" target="_blank">LinkedIn</a>
-      </div>
-    </header>
+    <div class="nav_menu" id="nav-menu">
+      <div class="nav_close" id="nav-close"><i class="bx bx-x"></i></div>
+      <ul class="nav_list">
+        <li class="nav_item"><a href="#home" class="nav_link">Home</a></li>
+        <li class="nav_item"><a href="#about" class="nav_link">About</a></li>
+        <li class="nav_item"><a href="#skills" class="nav_link">Skills</a></li>
+        <li class="nav_item"><a href="#education" class="nav_link">Education</a></li>
+        <li class="nav_item"><a href="#experience" class="nav_link">Experience</a></li>
+        <li class="nav_item"><a href="#achievements" class="nav_link">Achievements</a></li>
+        <li class="nav_item"><a href="#contact" class="nav_link">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
 
-    <!-- EXPERIENCE / PROJECTS -->
-    <section>
-      <h2>Experience & Key Projects</h2>
+<main class="l-main">
 
-      <div class="card">
-        <h3>Software Development Engineer – AI Hub Platform (ELIZA)</h3>
-        <div class="meta">Bank of New York Mellon | Jul 2023 – Present | Chennai</div>
-        <ul>
-          <li>Led a 7-member cross-functional team to deliver <strong>Project VECTA</strong>, a GenAI-powered system
-              (Claude Sonnet) that automates financial document interpretation and accelerates stakeholder
-              decision-making.</li>
-          <li>Designed and scaled backend microservices using <strong>Java 17, Spring Boot, Hibernate (JPA)</strong>,
-              handling <strong>50,000+ daily requests</strong> with <strong>99.9% availability</strong>.</li>
-          <li>Established a <strong>Data Engineering Review Board (DERB)</strong> with 80+ rule-driven controls to enforce
-              LLM security, data privacy, and regulatory compliance.</li>
-          <li>Improved backend performance by optimizing Hibernate and Oracle SQL queries and integrating
-              <strong>Caffeine Cache</strong>, reducing API latency by <strong>35%</strong>.</li>
-          <li>Engineered a <strong>semantic search & recommendation engine</strong> using vector embeddings and cosine
-              similarity, reducing redundant engineering effort by <strong>20%</strong>.</li>
-          <li>Built and maintained CI/CD pipelines using <strong>GitLab CI/CD, Docker, Kubernetes, Liquibase</strong>,
-              reducing deployment effort by <strong>70%</strong>.</li>
-          <li>Owned production readiness using <strong>Apache Kafka</strong> for asynchronous workflows and monitoring
-              via <strong>Splunk</strong>.</li>
-        </ul>
-      </div>
-    </section>
+<!-- ================= HOME ================= -->
+<section class="home" id="home">
+  <div class="home_container bd-grid">
+    <div class="home_data">
+      <div class="home_img"><img src="assets/img/profile.png" alt="Profile" /></div>
+      <h1 class="home_title">Prosenjit Kundu</h1>
+      <span class="home_profession">Backend / Full-Stack Software Engineer</span>
 
-    <!-- EDUCATION -->
-    <section>
-      <h2>Education</h2>
-
-      <div class="card">
-        <h3>Indian Institute of Technology Kharagpur</h3>
-        <div class="meta">M.Tech in Computer Science & Engineering | 2021 – 2023</div>
-        <p>DGPA: 8.72 / 10</p>
+      <div class="home_social">
+        <a href="#" class="home_social_link"><i class="bx bxl-linkedin"></i></a>
+        <a href="#" class="home_social_link"><i class="bx bxl-github"></i></a>
+        <a href="#" class="home_social_link"><i class="bx bx-code-alt"></i></a>
       </div>
 
-      <div class="card">
-        <h3>Cooch Behar Government Engineering College</h3>
-        <div class="meta">B.Tech in Computer Science & Engineering | 2016 – 2020</div>
-        <p>DGPA: 8.35 / 10</p>
-      </div>
-    </section>
-
-    <!-- ACHIEVEMENTS & CERTIFICATIONS -->
-    <section>
-      <h2>Achievements & Certifications</h2>
-
-      <div class="card">
-        <ul>
-          <li>Solved <strong>900+ problems on LeetCode</strong> with a peak rating of <strong>1576</strong>, placing in the
-              <strong>top 4% worldwide</strong>.</li>
-          <li>Secured <strong>AIR 378</strong> in <strong>GATE CSE 2021</strong>, ranking in the <strong>top 0.4 percentile</strong> nationally.</li>
-          <li>Experience working with enterprise-grade <strong>GenAI systems</strong>, including LLM integration,
-              vector embeddings, and RAG-style architectures.</li>
-        </ul>
-      </div>
-    </section>
-
-    <footer>
-      © 2026 Prosenjit Kundu · Backend & Distributed Systems Engineer
-    </footer>
-
+      <a href="#" class="button home_button">Download Resume</a>
+    </div>
   </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="about section" id="about">
+  <span class="section-subtitle">My Intro</span>
+  <h2 class="section-title">About Me</h2>
+
+  <div class="about_container bd-grid">
+    <div class="about_data">
+      <p class="about_description">
+        Short professional summary goes here. You can update this later with your background,
+        current role, and areas of expertise.
+      </p>
+      <img src="assets/img/about.png" alt="About" class="about_img" />
+    </div>
+
+    <div class="about_information">
+      <h3 class="about_information-title">Basic Information</h3>
+      <div class="about_information-data"><i class="bx bxs-user"></i><span>Name</span></div>
+      <div class="about_information-data"><i class="bx bxs-phone"></i><span>Phone</span></div>
+      <div class="about_information-data"><i class="bx bxs-envelope"></i><span>Email</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section class="skills section" id="skills">
+  <h2 class="section-title">Skills</h2>
+  <div class="skills_continer bd-grid">
+    <div class="skills_content">
+      <h3 class="skills_subtitle">Technical Skills</h3>
+      <div class="skills_data"><i class="bx bx-code"></i><span class="skills_name">Skill 1</span></div>
+      <div class="skills_data"><i class="bx bx-code"></i><span class="skills_name">Skill 2</span></div>
+      <div class="skills_data"><i class="bx bx-code"></i><span class="skills_name">Skill 3</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EDUCATION ================= -->
+<section class="education section" id="education">
+  <span class="section-subtitle">Qualification</span>
+  <h2 class="section-title">Education</h2>
+
+  <div class="education_container bd-grid">
+    <div class="education_content">
+      <div><h3 class="education_year">Year</h3><span class="education_university">Institute Name</span></div>
+      <div class="education_time"><span class="education_rounder"></span><span class="education_line"></span></div>
+      <div><h3 class="education_race">Degree</h3><span class="education_speciality">Specialization / CGPA</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section class="work section" id="experience">
+  <span class="section-subtitle">Professional</span>
+  <h2 class="section-title">Experience & Projects</h2>
+
+  <div class="works_container bd-grid">
+    <div class="works_img">
+      <div class="works_data">
+        <span class="works_title">Project / Role Title</span>
+        <p>Brief description of your current job project. You can expand later.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ACHIEVEMENTS ================= -->
+<section class="traning section" id="achievements">
+  <h2 class="section-title">Achievements & Certifications</h2>
+  <div class="traning_continer bd-grid">
+    <div class="traning_content">
+      <h3 class="traning_name"><i class="bx bxs-certification"></i> Achievement / Certification</h3>
+      <span class="traning_place">Details</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="contact section" id="contact">
+  <h2 class="section-title">Contact</h2>
+  <div class="contact_container bd-grid">
+    <div class="contact_info"><h3 class="contact_subtitle">Phone</h3><span>+91 XXXXXXXX</span></div>
+    <div class="contact_info"><h3 class="contact_subtitle">Email</h3><span>email@example.com</span></div>
+    <div class="contact_info"><h3 class="contact_subtitle">Location</h3><span>India</span></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer section">
+  <div class="footer_container bd-grid">
+    <h1 class="footer_title">Prosenjit</h1>
+    <p class="footer_description">Personal portfolio website</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
 </body>
 </html>
