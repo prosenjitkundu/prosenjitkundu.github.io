@@ -1,23 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prosenjit Kundu | Backend Software Engineer</title>
   <meta name="description" content="Backend / Full-Stack Software Engineer at BNY Mellon | Distributed Systems | GenAI | Kafka" />
+  <meta name="color-scheme" content="light dark">
 
   <style>
-    :root{
-      --bg-primary:#020617; --bg-secondary:#0f172a; --card-bg:#020617;
-      --border:#1e293b; --text-primary:#e5e7eb; --text-secondary:#94a3b8;
-      --accent:#38bdf8; --cert-bg:rgba(255,255,255,0.02);
+    /* Light theme */
+    :root[data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #f1f5f9;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
+      --accent: #3b82f6;
+      --cert-bg: rgba(0, 0, 0, 0.02);
+    }
+
+    /* Dark theme */
+    :root[data-theme="dark"] {
+      --bg-primary: #020617;
+      --bg-secondary: #0f172a;
+      --card-bg: #020617;
+      --border: #1e293b;
+      --text-primary: #e5e7eb;
+      --text-secondary: #94a3b8;
+      --accent: #38bdf8;
+      --cert-bg: rgba(255, 255, 255, 0.02);
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-      background:linear-gradient(180deg,var(--bg-primary),var(--bg-secondary));
-      color:var(--text-primary);line-height:1.7;
+    body {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
+      color: var(--text-primary);
+      line-height: 1.7;
+      transition: background 0.3s ease, color 0.3s ease;
     }
     a{color:var(--accent);text-decoration:none}
     .container{max-width:1100px;margin:auto;padding:48px 24px}
@@ -29,7 +50,52 @@
     h1.name{font-size:2.6rem;margin-bottom:8px;word-break:break-word;letter-spacing:.4px}
 
     /* top links with icons */
-    .top-links{margin-top:8px;display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center}
+    .top-links{margin-top:8px;display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center;position:relative;}
+    /* Theme Toggle Button (kept as a reusable class) */
+    .theme-toggle {
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .theme-toggle:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+      transform: rotate(30deg);
+    }
+    [data-theme="dark"] .theme-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Fixed theme toggle placed below hamburger */
+    .theme-toggle-fixed {
+      position: fixed;
+      /* center under hamburger: hamburger left (24px) + half hamburger width (28px / 2) - half toggle width (40px / 2) */
+      left: calc(24px + (28px - 40px) / 2);
+      top: 64px; /* positioned below the hamburger (24px top + hamburger height + spacing) */
+      z-index: 1002;
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-primary);
+      transition: background-color 0.2s ease, transform 0.12s ease;
+    }
+    .theme-toggle-fixed:hover { background-color: rgba(0,0,0,0.04); transform: rotate(20deg); }
+    [data-theme="dark"] .theme-toggle-fixed:hover { background-color: rgba(255,255,255,0.06); }
+
+    /* Hide any in-header toggle if present (we're using fixed one) */
+    .top-links .theme-toggle { display: none; }
+
     .top-link{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;text-decoration:none;color:var(--accent);background:transparent;font-weight:600;transition:background .15s,transform .08s}
     .top-link:hover{background:rgba(56,189,248,0.06);transform:translateY(-1px)}
     .top-link .icon{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;color:var(--accent);flex:0 0 18px}
@@ -67,17 +133,19 @@
     }
 
     .hamburger:focus {
-      outline: 2px solid rgba(255,255,255,0.12);
+      outline: 2px solid rgba(0,0,0,0.12);
       outline-offset: 2px;
     }
 
     .hamburger span {
       display: block;
       height: 3px;
-      background: #ffffff; /* ensure pure white lines */
+      background: var(--text-primary); /* use theme text color so it contrasts (opposite) */
       border-radius: 4px;
       transition: transform 0.18s ease, opacity 0.18s ease;
     }
+    /* ensure the focus ring color is visible in dark theme */
+    [data-theme="dark"] .hamburger:focus { outline: 2px solid rgba(255,255,255,0.12); }
 
     /* Sidebar */
     .sidebar{
@@ -145,6 +213,11 @@
   <span></span>
 </button>
 
+<!-- Theme toggle fixed under the hamburger -->
+<button class="theme-toggle theme-toggle-fixed" id="themeToggle" aria-label="Toggle dark mode">
+  <i class="fas fa-moon"></i>
+</button>
+
 <!-- SIDE NAV (order matches desired menu) -->
 <nav id="sidebar" class="sidebar" aria-hidden="true">
   <a href="#home" data-target="home">Home</a>
@@ -167,25 +240,25 @@
       <h1 class="name">Prosenjit Kundu</h1>
 
       <div class="top-links" aria-hidden="false">
-        <a class="top-link" href="https://github.com/prosenjitkundu" target="_blank" rel="noopener" aria-label="GitHub">
-            <span class="icon" aria-hidden="true">
-              <!-- GitHub -->
-              <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.1.82a7.6 7.6 0 012.01-.27c.68 0 1.36.09 2.01.27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z"/>
-              </svg>
-            </span>
-          <span class="label">GitHub</span>
-        </a>
+         <a class="top-link" href="https://github.com/prosenjitkundu" target="_blank" rel="noopener" aria-label="GitHub">
+             <span class="icon" aria-hidden="true">
+               <!-- GitHub -->
+               <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                 <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.1.82a7.6 7.6 0 012.01-.27c.68 0 1.36.09 2.01.27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z"/>
+               </svg>
+             </span>
+           <span class="label">GitHub</span>
+         </a>
 
-<!--        <a class="top-link" href="https://gitlab.com/prosenjitkundu" target="_blank" rel="noopener" aria-label="GitLab">-->
-<!--            <span class="icon" aria-hidden="true">-->
-<!--              &lt;!&ndash; GitLab &ndash;&gt;-->
-<!--              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">-->
-<!--                <path d="M12 2l2.1 4.9 5.2.8-3.8 3.3L17 16l-5-3-5 3 .5-4.9L4.6 7.7l5.2-.8L12 2z"/>-->
-<!--              </svg>-->
-<!--            </span>-->
-<!--          <span class="label">GitLab</span>-->
-<!--        </a>-->
+        <!--        <a class="top-link" href="https://gitlab.com/prosenjitkundu" target="_blank" rel="noopener" aria-label="GitLab">-->
+        <!--            <span class="icon" aria-hidden="true">-->
+        <!--              &lt;!&ndash; GitLab &ndash;&gt;-->
+        <!--              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">-->
+        <!--                <path d="M12 2l2.1 4.9 5.2.8-3.8 3.3L17 16l-5-3-5 3 .5-4.9L4.6 7.7l5.2-.8L12 2z"/>-->
+        <!--              </svg>-->
+        <!--            </span>-->
+        <!--          <span class="label">GitLab</span>-->
+        <!--        </a>-->
 
         <a class="top-link" href="https://www.linkedin.com/in/kundu-prosenjit" target="_blank" rel="noopener" aria-label="LinkedIn">
             <span class="icon" aria-hidden="true">
@@ -566,13 +639,46 @@
   <footer>© 2026 Prosenjit Kundu · Backend & Full Stack Developer</footer>
 </div>
 
+<!-- Font Awesome for theme toggle icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script>
-  const sidebar=document.getElementById('sidebar'), overlay=document.getElementById('overlay'), hamburger=document.getElementById('hamburger');
+  // Theme Toggle Functionality
+  const themeToggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  // Check for saved user preference, if any, on load
+  const currentTheme = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', currentTheme);
+  updateThemeIcon(currentTheme);
+  // Toggle theme on button click
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+  });
+  function updateThemeIcon(theme) {
+    const themeIcon = themeToggle.querySelector('i');
+    if (theme === 'dark') {
+      themeIcon.classList.remove('fa-moon');
+      themeIcon.classList.add('fa-sun');
+    } else {
+      themeIcon.classList.remove('fa-sun');
+      themeIcon.classList.add('fa-moon');
+    }
+  }
+  // Sidebar functionality
+  const sidebar = document.getElementById('sidebar'),
+        overlay = document.getElementById('overlay'),
+        hamburger = document.getElementById('hamburger');
 
   function openSidebar(){
-    sidebar.classList.add('active'); overlay.classList.add('active');
-    sidebar.setAttribute('aria-hidden','false'); hamburger.setAttribute('aria-expanded','true');
-    const first=sidebar.querySelector('a'); if(first) first.focus();
+    sidebar.classList.add('active');
+    overlay.classList.add('active');
+    sidebar.setAttribute('aria-hidden','false');
+    hamburger.setAttribute('aria-expanded','true');
+    const first = sidebar.querySelector('a');
+    if(first) first.focus();
   }
   function closeSidebar(){
     sidebar.classList.remove('active'); overlay.classList.remove('active');
