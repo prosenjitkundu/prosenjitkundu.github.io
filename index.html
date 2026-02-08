@@ -3,718 +3,588 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prosenjit Kundu | Backend Software Engineer</title>
-  <meta name="description" content="Backend / Full-Stack Software Engineer at BNY Mellon | Distributed Systems | GenAI | Kafka" />
-  <meta name="color-scheme" content="light dark">
+  <title>Prosenjit Kundu | Backend SDE & Distributed Systems</title>
+  <meta name="description" content="Backend Software Engineer | Java, Spring Boot, Distributed Systems, Kafka, GenAI" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* Light theme */
+    /* --- VARIABLES & THEME --- */
     :root[data-theme="light"] {
-      --bg-primary: #f8fafc;
-      --bg-secondary: #f1f5f9;
-      --card-bg: #ffffff;
+      --bg-body: #f8fafc;
+      --bg-sidebar: #ffffff;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
       --border: #e2e8f0;
-      --text-primary: #1e293b;
-      --text-secondary: #475569;
-      --accent: #3b82f6;
-      --cert-bg: rgba(0, 0, 0, 0.02);
+      --accent: #2563eb;       /* Professional Blue */
+      --accent-hover: #1d4ed8;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
 
-    /* Dark theme */
     :root[data-theme="dark"] {
-      --bg-primary: #020617;
-      --bg-secondary: #0f172a;
-      --card-bg: #020617;
-      --border: #1e293b;
-      --text-primary: #e5e7eb;
-      --text-secondary: #94a3b8;
-      --accent: #38bdf8;
-      --cert-bg: rgba(255, 255, 255, 0.02);
+      --bg-body: #020617;
+      --bg-sidebar: #0f172a;
+      --bg-card: #1e293b;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --accent: #38bdf8;       /* Lighter Blue for Dark Mode */
+      --accent-hover: #0ea5e9;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
-      color: var(--text-primary);
-      line-height: 1.7;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.6;
       transition: background 0.3s ease, color 0.3s ease;
     }
-    a{color:var(--accent);text-decoration:none}
-    .container{max-width:1100px;margin:auto;padding:48px 24px}
 
-    /* Header / profile */
-    header#home{margin-bottom:24px;padding-top:24px}
-    .profile{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:nowrap}
-    .name-block{flex:1 1 auto;min-width:0}
-    h1.name{font-size:2.6rem;margin-bottom:8px;word-break:break-word;letter-spacing:.4px}
+    a { text-decoration: none; color: inherit; transition: 0.2s; }
+    ul { list-style: none; }
 
-    /* top links with icons */
-    .top-links{margin-top:8px;display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center;position:relative;}
-    /* Theme Toggle Button (kept as a reusable class) */
-    .theme-toggle {
-      background: none;
-      border: none;
-      color: var(--text-primary);
-      font-size: 1.2rem;
-      cursor: pointer;
-      padding: 6px 8px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background-color 0.3s ease, transform 0.2s ease;
+    /* --- LAYOUT UTILS --- */
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+
+    /* Spacing Fix: Increased margin-bottom for clear separation */
+    section { margin-bottom: 100px; scroll-margin-top: 100px; }
+
+    /* Headings */
+    h1, h2, h3 { font-weight: 700; letter-spacing: -0.025em; }
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 32px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
     }
-    .theme-toggle:hover {
-      background-color: rgba(0, 0, 0, 0.05);
-      transform: rotate(30deg);
-    }
-    [data-theme="dark"] .theme-toggle:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
+    h2 i { color: var(--accent); font-size: 1.4rem; }
 
-    /* Fixed theme toggle placed below hamburger */
-    .theme-toggle-fixed {
-      position: fixed;
-      /* center under hamburger: hamburger left (24px) + half hamburger width (28px / 2) - half toggle width (40px / 2) */
-      left: calc(24px + (28px - 40px) / 2);
-      top: 64px; /* positioned below the hamburger (24px top + hamburger height + spacing) */
-      z-index: 1002;
-      width: 40px;
-      height: 40px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      background: transparent;
-      color: var(--text-primary);
-      transition: background-color 0.2s ease, transform 0.12s ease;
-    }
-    .theme-toggle-fixed:hover { background-color: rgba(0,0,0,0.04); transform: rotate(20deg); }
-    [data-theme="dark"] .theme-toggle-fixed:hover { background-color: rgba(255,255,255,0.06); }
-
-    /* Hide any in-header toggle if present (we're using fixed one) */
-    .top-links .theme-toggle { display: none; }
-
-    .top-link{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;text-decoration:none;color:var(--accent);background:transparent;font-weight:600;transition:background .15s,transform .08s}
-    .top-link:hover{background:rgba(56,189,248,0.06);transform:translateY(-1px)}
-    .top-link .icon{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;color:var(--accent);flex:0 0 18px}
-    .top-link .label{font-size:.95rem;color:var(--accent)}
-
-    .sub-lines{color:var(--text-secondary);font-size:1rem;margin-top:10px;display:flex;flex-direction:column;gap:6px}
-
-    /* avatar: increased and aligned with left details */
-    .avatar-square{
-      width: 240px;
-      height: 240px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 2px solid var(--border);
-      flex: 0 0 240px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.05));
-    }
-
-    /* Hamburger (user provided style) - FIXED: transparent background so it matches page, white lines */
-    .hamburger {
+    /* --- NAVIGATION CONTROLS (Updated for Horizontal Layout) --- */
+    .nav-controls {
       position: fixed;
       top: 24px;
       left: 24px;
-      width: 28px;
-      height: 24px;
+      z-index: 1001; /* Above sidebar overlay */
+      display: flex;
+      align-items: center;
+      gap: 12px; /* Space between hamburger and theme toggle */
+    }
+
+    .hamburger {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      z-index: 1001;
+      width: 40px;
+      height: 40px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      background: transparent; /* show underlying page gradient */
-      border: none;
-      padding: 4px;
-      border-radius: 6px;
+      justify-content: center;
+      gap: 5px;
+      box-shadow: var(--shadow);
+    }
+    .hamburger span { height: 2px; background: var(--text-main); width: 100%; border-radius: 2px; }
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-main);
+      box-shadow: var(--shadow);
+      font-size: 1.1rem;
+    }
+    .theme-toggle:hover, .hamburger:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
     }
 
-    .hamburger:focus {
-      outline: 2px solid rgba(0,0,0,0.12);
-      outline-offset: 2px;
+    /* --- HERO SECTION --- */
+    .hero {
+      display: flex; gap: 40px; align-items: center; margin-bottom: 80px;
+      padding-top: 20px;
+    }
+    .hero-content { flex: 1; }
+    .hero-name { font-size: 3rem; line-height: 1.1; margin-bottom: 16px; }
+    .hero-title {
+      font-size: 1.15rem; color: var(--text-muted); margin-bottom: 24px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .hero-title span { display: flex; align-items: center; gap: 10px; }
+
+    .hero-img {
+      width: 240px; height: 240px;
+      object-fit: cover; border-radius: 16px;
+      box-shadow: var(--shadow-hover);
+      border: 4px solid var(--bg-card);
     }
 
-    .hamburger span {
-      display: block;
-      height: 3px;
-      background: var(--text-primary); /* use theme text color so it contrasts (opposite) */
-      border-radius: 4px;
-      transition: transform 0.18s ease, opacity 0.18s ease;
+    .social-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    .social-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border-radius: 8px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      font-weight: 600; font-size: 0.9rem; color: var(--text-main);
     }
-    /* ensure the focus ring color is visible in dark theme */
-    [data-theme="dark"] .hamburger:focus { outline: 2px solid rgba(255,255,255,0.12); }
-
-    /* Sidebar */
-    .sidebar{
-      position:fixed;top:0;left:-280px;width:280px;height:100%;background:var(--bg-secondary);border-right:1px solid var(--border);
-      padding:90px 20px;display:flex;flex-direction:column;gap:18px;transition:left .28s cubic-bezier(.2,.9,.2,1);z-index:1101;box-shadow:12px 0 30px rgba(0,0,0,0.6)
+    .social-btn:hover {
+      border-color: var(--accent); color: var(--accent);
+      transform: translateY(-2px); box-shadow: var(--shadow);
     }
-    .sidebar.active{left:0}
-    .sidebar a{font-size:1rem;color:var(--text-primary);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px}
-    .sidebar a:hover{color:var(--accent);background:rgba(56,189,248,0.04)}
 
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);opacity:0;pointer-events:none;transition:opacity .28s;z-index:1100}
-    .overlay.active{opacity:1;pointer-events:auto}
+    /* --- SIDEBAR NAV --- */
+    .sidebar {
+      position: fixed; top: 0; left: -280px; width: 260px; height: 100%;
+      background: var(--bg-sidebar); border-right: 1px solid var(--border);
+      padding: 80px 20px; z-index: 1000; transition: 0.3s ease;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .sidebar.active { left: 0; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
+    .sidebar a {
+      padding: 12px 16px; border-radius: 8px; font-weight: 500;
+      color: var(--text-muted);
+    }
+    .sidebar a:hover { background: var(--bg-body); color: var(--accent); }
+    .sidebar a.resume {
+      margin-top: auto; background: var(--accent); color: #fff; text-align: center;
+    }
+    .sidebar a.resume:hover { opacity: 0.9; }
 
-    /* content sections */
-    section{margin-bottom:96px}
-    section h2{font-size:1.8rem;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px}
-    .card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:24px}
-    .card h3{font-size:1.2rem;margin-bottom:8px}
-    .meta{color:var(--text-secondary);font-size:.95rem;margin-bottom:14px}
-    .card p{margin-bottom:16px}
+    .overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999;
+      opacity: 0; pointer-events: none; transition: 0.3s;
+    }
+    .overlay.active { opacity: 1; pointer-events: auto; }
 
-    /* about subsections */
-    .about-grid{display:flex;flex-direction:column;gap:16px}
-    .about-sub{margin-top:6px}
-    .about-sub h4{font-size:1.02rem;margin-bottom:8px;color:var(--text-primary)}
-    .about-sub p{color:var(--text-secondary);font-size:.95rem;line-height:1.5}
-    .hobby-list{color:var(--text-secondary);padding-left:18px;margin-top:6px}
-    .hobby-list li{margin-bottom:8px}
+    /* --- SECTIONS & CARDS --- */
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 32px;
+      box-shadow: var(--shadow);
+    }
 
-    /* contact items */
-    .contact-row{margin-top:12px;display:flex;flex-direction:column;gap:10px;color:var(--text-secondary);font-size:.96rem}
-    .contact-item{display:flex;align-items:center;gap:10px}
-    .contact-item .icon{width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;color:var(--accent);flex:0 0 20px}
-    .contact-item .text{color:var(--text-secondary)}
+    /* Experience */
+    .exp-header {
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
+    }
+    .exp-role { font-size: 1.25rem; font-weight: 700; color: var(--accent); }
+    .exp-company { font-size: 1.1rem; font-weight: 600; }
+    .exp-date { font-size: 0.9rem; color: var(--text-muted); font-style: italic; }
+    .exp-list { padding-left: 20px; color: var(--text-muted); }
+    .exp-list li { margin-bottom: 12px; }
+    .exp-list strong { color: var(--text-main); }
 
-    /* rest (certs, projects, skills, por) */
-    .cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:12px}
-    .cert-card{display:flex;gap:14px;align-items:flex-start;background:var(--cert-bg);border:1px solid var(--border);padding:12px;border-radius:12px}
-    .cert-badge{width:82px;height:56px;flex:0 0 82px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.02)}
-    .cert-info{flex:1 1 auto}
-    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:8px}
-    .project-thumb{width:100%;height:160px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+    /* Projects Grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .project-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; transition: 0.2s;
+      display: flex; flex-direction: column;
+    }
+    .project-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); border-color: var(--accent); }
 
-    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:12px}
-    .skill-card{background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.02));border:1px solid var(--border);border-radius:12px;padding:14px}
+    .project-img {
+      width: 100%; height: 160px; object-fit: cover;
+      border-bottom: 1px solid var(--border); background: var(--bg-body);
+    }
+    .project-content { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+    .project-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .project-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px; flex: 1; }
+    .project-tech {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto;
+    }
+    .tech-tag {
+      font-size: 0.75rem; background: var(--bg-body); padding: 4px 8px;
+      border-radius: 4px; border: 1px solid var(--border); color: var(--text-muted);
+    }
 
-    .por-list{padding-left:6px;margin-top:8px;list-style:none}
-    .por-list li{margin-bottom:12px;color:var(--text-primary);display:flex;align-items:flex-start;gap:10px}
-    .por-icon{width:22px;height:22px;flex:0 0 22px;display:inline-flex;align-items:center;justify-content:center;margin-top:2px}
+    /* Certificates Grid */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .cert-card {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--bg-card); padding: 16px;
+      border-radius: 10px; border: 1px solid var(--border);
+      transition: 0.2s;
+    }
+    .cert-card:hover { border-color: var(--accent); transform: translateX(4px); }
+    .cert-icon {
+      width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+      background: var(--bg-body); border-radius: 8px; color: var(--accent);
+      font-size: 1.5rem; flex-shrink: 0; border: 1px solid var(--border);
+    }
 
-    footer{border-top:1px solid var(--border);padding-top:24px;color:var(--text-secondary);font-size:.9rem;text-align:center}
+    /* Specific styling for SVG icons inside cert badges */
+    .cert-icon svg { width: 28px; height: 28px; fill: currentColor; }
 
-    /* responsive */
-    @media(max-width:1000px){ .avatar-square{width:200px;height:200px;flex:0 0 200px} }
-    @media(max-width:880px){ .avatar-square{width:160px;height:160px;flex:0 0 160px} }
-    @media(max-width:720px){ .profile{flex-direction:column;align-items:flex-start;gap:16px}.avatar-square{width:120px;height:120px;flex:0 0 120px;align-self:flex-end}.sidebar{width:85%;left:-90%}.top-link .label{display:none} }
+    .cert-info h4 { font-size: 1rem; margin-bottom: 4px; line-height: 1.3; }
+    .cert-info p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px;}
+    .cert-link { font-size: 0.8rem; color: var(--accent); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+
+    /* Skills Grid */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .skill-box {
+      background: var(--bg-card); border: 1px solid var(--border); padding: 20px;
+      border-radius: 10px; text-align: left;
+    }
+    .skill-box i { font-size: 1.5rem; color: var(--accent); margin-bottom: 12px; display: block;}
+    .skill-box h4 { margin-bottom: 8px; font-weight: 700; color: var(--text-main); }
+    .skill-box p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .hero { flex-direction: column-reverse; text-align: center; gap: 24px; }
+      .hero-title span { justify-content: center; }
+      .social-links { justify-content: center; }
+      .hero-img { width: 180px; height: 180px; }
+      .exp-header { flex-direction: column; gap: 4px; }
+      .container { padding-top: 60px; }
+      section { margin-bottom: 60px; }
+    }
   </style>
 </head>
 <body>
 
-<!-- HAMBURGER BUTTON -->
-<button id="hamburger" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
-  <span></span>
-  <span></span>
-  <span></span>
-</button>
+<div class="nav-controls">
+  <div class="hamburger" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </div>
+  <button class="theme-toggle" onclick="toggleTheme()">
+    <i class="fas fa-moon"></i>
+  </button>
+</div>
 
-<!-- Theme toggle fixed under the hamburger -->
-<button class="theme-toggle theme-toggle-fixed" id="themeToggle" aria-label="Toggle dark mode">
-  <i class="fas fa-moon"></i>
-</button>
+<div class="overlay" onclick="closeSidebar()" id="overlay"></div>
 
-<!-- SIDE NAV (order matches desired menu) -->
-<nav id="sidebar" class="sidebar" aria-hidden="true">
-  <a href="#home" data-target="home">Home</a>
-  <a href="#about" data-target="about">About</a>
-  <a href="#experience" data-target="experience">Experience ⭐</a>
-  <a href="#skills" data-target="skills">Skills ⭐</a>
-  <a href="#projects" data-target="projects">Projects</a>
-  <a href="#education" data-target="education">Education</a>
-  <a href="#certification" data-target="certification">Certifications & Achievements</a>
-  <a href="#por" data-target="por">Positions of Responsibility</a>
+<nav class="sidebar" id="sidebar">
+  <a href="#home" onclick="closeSidebar()">Home</a>
+  <a href="#about" onclick="closeSidebar()">About</a>
+  <a href="#experience" onclick="closeSidebar()">Experience</a>
+  <a href="#skills" onclick="closeSidebar()">Skills</a>
+  <a href="#projects" onclick="closeSidebar()">Projects</a>
+  <a href="#certifications" onclick="closeSidebar()">Certifications</a>
+  <a href="#education" onclick="closeSidebar()">Education</a>
+  <a href="#por" onclick="closeSidebar()">Positions of Responsibility</a>
+  <a href="#" class="resume" download><i class="fas fa-download"></i> Resume</a>
 </nav>
-
-<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
 
 <div class="container">
 
-  <!-- HOME / HEADER -->
-  <header id="home" class="profile">
-    <div class="name-block">
-      <h1 class="name">Prosenjit Kundu</h1>
-
-      <div class="top-links" aria-hidden="false">
-         <a class="top-link" href="https://github.com/prosenjitkundu" target="_blank" rel="noopener" aria-label="GitHub">
-             <span class="icon" aria-hidden="true">
-               <!-- GitHub -->
-               <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                 <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.1.82a7.6 7.6 0 012.01-.27c.68 0 1.36.09 2.01.27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z"/>
-               </svg>
-             </span>
-           <span class="label">GitHub</span>
-         </a>
-
-        <!--        <a class="top-link" href="https://gitlab.com/prosenjitkundu" target="_blank" rel="noopener" aria-label="GitLab">-->
-        <!--            <span class="icon" aria-hidden="true">-->
-        <!--              &lt;!&ndash; GitLab &ndash;&gt;-->
-        <!--              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">-->
-        <!--                <path d="M12 2l2.1 4.9 5.2.8-3.8 3.3L17 16l-5-3-5 3 .5-4.9L4.6 7.7l5.2-.8L12 2z"/>-->
-        <!--              </svg>-->
-        <!--            </span>-->
-        <!--          <span class="label">GitLab</span>-->
-        <!--        </a>-->
-
-        <a class="top-link" href="https://www.linkedin.com/in/kundu-prosenjit" target="_blank" rel="noopener" aria-label="LinkedIn">
-            <span class="icon" aria-hidden="true">
-              <!-- LinkedIn -->
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4.98 3.5C4.98 4.6 4.12 5.5 3 5.5 1.88 5.5 1 4.6 1 3.5 1 2.4 1.88 1.5 3 1.5 4.12 1.5 4.98 2.4 4.98 3.5zM1.5 8.5h3v12H1.5zM9.5 8.5h2.8v1.6h.04c.39-.74 1.34-1.6 2.76-1.6 2.95 0 3.5 1.94 3.5 4.46V20.5h-3v-5.07c0-1.21-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.69V20.5h-3V8.5z"/>
-              </svg>
-            </span>
-          <span class="label">LinkedIn</span>
-        </a>
-
-        <a class="top-link" href="https://leetcode.com/u/_pros_" target="_blank" rel="noopener" aria-label="LeetCode">
-            <span class="icon" aria-hidden="true">
-              <!-- LeetCode -->
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12.5 3.1c.3-.2.8-.2 1.1.1l3.3 3.3a.9.9 0 010 1.3L10.1 14.6a.9.9 0 01-.7.2l-3.3-.7a.9.9 0 01-.6-1.4L9.5 4.2c.1-.3.4-.6.8-.8l2.2-.3zM20 14.5a1 1 0 01-1 1h-1.5l-2.2-2.3 1.2-1.5 2.5 2.1c.4.4.6 1 .1 1.7zM6 18c0 1 1 2 2.2 2h7.6A2.2 2.2 0 0018 18v-1.2H6V18z"/>
-              </svg>
-            </span>
-          <span class="label">LeetCode</span>
-        </a>
+  <header id="home" class="hero">
+    <div class="hero-content">
+      <h1 class="hero-name">Prosenjit Kundu</h1>
+      <div class="hero-title">
+        <span><i class="fas fa-terminal"></i> Full Stack Software Engineer @ Bank Of New York</span>
+        <span><i class="fas fa-graduation-cap"></i> M.Tech, IIT Kharagpur</span>
+        <span><i class="fas fa-map-marker-alt"></i> Chennai, India</span>
       </div>
-
-      <div class="sub-lines" aria-hidden="false">
-        <span>🚀 Full Stack Developer | Bank Of New York</span>
-        <span>🎓 IIT KGP | CGEC</span>
-        <span>🏠 Durgapur to Chennai ✈</span>
+      <div class="social-links">
+        <a href="https://github.com/prosenjitkundu" target="_blank" class="social-btn"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://www.linkedin.com/in/kundu-prosenjit" target="_blank" class="social-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="https://leetcode.com/u/_pros_" target="_blank" class="social-btn"><i class="fas fa-code"></i> LeetCode</a>
+        <a href="mailto:prosenjitkundu210@gmail.com" class="social-btn"><i class="fas fa-envelope"></i> Email</a>
       </div>
     </div>
-
-    <img src="https://raw.githubusercontent.com/prosenjitkundu/prosenjitkundu.github.io/4841c015a52c77309c49e1db82a128a1ca0b7fd4/IMG_0215.JPG"
-         alt="Prosenjit Kundu" class="avatar-square" />
+    <img src="https://raw.githubusercontent.com/prosenjitkundu/prosenjitkundu.github.io/4841c015a52c77309c49e1db82a128a1ca0b7fd4/IMG_0215.JPG" alt="Profile" class="hero-img">
   </header>
 
-  <!-- ABOUT (first after Home per menu order) -->
   <section id="about">
-    <h2>About</h2>
-    <div class="card about-grid">
-      <div class="about-sub">
-        <h4>Work</h4>
-        <p>Backend / Full-Stack Software Engineer focused on building and operating scalable Java & Spring Boot microservices for enterprise fintech platforms.</p>
-        <p>Currently contributing to the AI Hub (ELIZA) — integrating GenAI, Kafka-based async processing, and production-grade observability.</p>
-      </div>
-
-      <div class="about-sub">
-        <h4>Hobby</h4>
-        <ul class="hobby-list">
-          <li>Volleyball (District Level)</li>
-          <li>Football</li>
-          <li>Listening Detective Stories — Feluda, Byomkesh Bakshi, Sherlock Holmes</li>
-          <li>Travelling</li>
-        </ul>
-      </div>
-
-      <div class="about-sub">
-        <h4>Contact</h4>
-        <div class="contact-row" aria-label="contact details">
-          <div class="contact-item">
-              <span class="icon" aria-hidden="true">
-                <!-- phone icon -->
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M22 16.92V21a1 1 0 0 1-1.09 1A19 19 0 0 1 3 4.09 1 1 0 0 1 4 3h4.09a1 1 0 0 1 1 .75c.12.72.4 1.83.88 2.8a1 1 0 0 1-.24 1.01L9.91 9.91a12 12 0 0 0 5.18 5.18l1.35-1.35a1 1 0 0 1 1.01-.24c.97.48 2.08.76 2.8.88a1 1 0 0 1 .75 1V22z"/>
-                </svg>
-              </span>
-            <span class="text">+91 7602960364</span>
-          </div>
-
-          <div class="contact-item">
-              <span class="icon" aria-hidden="true">
-                <!-- email icon -->
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4 4h16v16H4z"></path>
-                  <path d="M22 6l-10 7L2 6"></path>
-                </svg>
-              </span>
-            <span class="text">prosenjitkundu210@gmail.com</span>
-          </div>
-
-          <div class="contact-item">
-              <span class="icon" aria-hidden="true">
-                <!-- map pin icon -->
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"></path>
-                  <circle cx="12" cy="10" r="3" fill="currentColor"></circle>
-                </svg>
-              </span>
-            <span class="text">Chennai, India</span>
-          </div>
-        </div>
-      </div>
+    <h2><i class="fas fa-user"></i> About Me</h2>
+    <div class="card">
+      <p style="margin-bottom: 16px; color: var(--text-muted);">
+        I am a <strong>Backend Engineer</strong> with a strong foundation in building scalable, distributed systems. Currently working at <strong>Bank Of New York</strong>, I design and maintain high-availability Java microservices that power critical financial workflows.
+      </p>
+      <p style="color: var(--text-muted);">
+        My technical focus areas include <strong>System Design (Horizontal Scaling)</strong>, <strong>Event-Driven Architecture (Kafka)</strong>, and <strong>GenAI integration</strong>. I am passionate about writing clean, concurrency-safe code and optimizing application performance.
+      </p>
     </div>
   </section>
 
-  <!-- Experience -->
   <section id="experience">
-    <h2>Experience</h2>
+    <h2><i class="fas fa-briefcase"></i> Experience</h2>
     <div class="card">
-      <h3>Software Development Engineer – AI Hub Platform (ELIZA)</h3>
-      <div class="meta">Bank of New York Mellon | Jul 2023 – Present | Chennai</div>
-
-      <p>
-        In my role as a Software Development Engineer on the AI Hub Platform (ELIZA) at Bank of New York Mellon, I work on designing, developing, and operating scalable backend and full-stack systems for enterprise fintech use cases. I primarily build Java-based microservices using Java 17, Spring Boot, Spring MVC, and Hibernate (JPA), focusing on clean REST API contracts, fault tolerance, and high availability. These services support large-scale distributed workflows and consistently handle over 50,000 daily requests while maintaining 99.9% uptime in production environments.
-      </p>
-
-      <p>
-        I contribute across the full development lifecycle, from system design and architecture discussions to implementation, testing, deployment, and production support. My work involves implementing asynchronous, event-driven architectures using Apache Kafka to enable reliable inter-service communication and scalable data processing. I also collaborate closely with frontend teams using Angular, HTML, and CSS to deliver complete end-to-end features that align with product and platform requirements.
-      </p>
-
-      <p>
-        A significant part of my role involves building and integrating GenAI-powered capabilities into enterprise systems. I have worked on solutions leveraging large language models to automate financial document interpretation, semantic search, and intelligent recommendations, while ensuring strict compliance with data privacy and regulatory requirements. To support this, I helped establish governance mechanisms and rule-based controls to enforce security, compliance, and responsible AI usage across the platform.
-      </p>
-
-      <p>
-        I actively focus on performance optimization and system reliability by tuning Oracle SQL queries, optimizing Hibernate usage, and introducing caching mechanisms such as Caffeine Cache, which resulted in measurable latency improvements. I also build and maintain CI/CD pipelines using GitLab CI/CD, Docker, Kubernetes, and Liquibase, significantly reducing deployment effort and improving release stability. Alongside development, I own production readiness, monitoring, and troubleshooting using tools like Splunk, and regularly collaborate with cross-functional teams while mentoring junior engineers and driving engineering best practices.
-      </p>
-    </div>
-  </section>
-
-  <!-- Skills -->
-  <section id="skills">
-    <h2>Skills</h2>
-    <div class="skills-grid">
-      <div class="skill-card">
-        <div class="skill-title">Core Backend & Java</div>
-        <div class="skill-list">Java (8,11,17,21) · Spring Boot · Spring MVC · Spring Security · Hibernate (JPA) · RESTful APIs · Microservices · API Design · Caching</div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-title">Distributed Systems & Messaging</div>
-        <div class="skill-list">Apache Kafka · Event-Driven Architecture · Asynchronous Processing · Fault Tolerance · High Availability</div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-title">Databases & Data Management</div>
-        <div class="skill-list">Oracle SQL · PostgreSQL · Query Optimization · Indexing · Transactions · Caffeine Cache</div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-title">Frontend & Full-Stack</div>
-        <div class="skill-list">Angular · JavaScript · HTML5 · CSS3 · REST API Integration</div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-title">DevOps, Cloud & CI/CD</div>
-        <div class="skill-list">Docker · Kubernetes · GitLab CI/CD · Liquibase · Maven · AWS S3 · GCP App Engine</div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-title">AI / GenAI</div>
-        <div class="skill-list">LLM Integration (Claude, GPT) · Semantic Search · Vector Embeddings · RAG</div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-title">Testing & Quality</div>
-        <div class="skill-list">JUnit · Mockito · Unit & Integration Testing · Code Reviews</div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-title">Monitoring & Production Support</div>
-        <div class="skill-list">Splunk · Monitoring · Incident Debugging · Performance Tuning</div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-title">Computer Science Fundamentals</div>
-        <div class="skill-list">Data Structures & Algorithms · OOP · Design Patterns · Concurrency</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects -->
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="projects-grid">
-      <div class="project-card">
-        <a href="https://github.com/prosenjitkundu/SAT-SOLVER" target="_blank" rel="noopener"><img class="project-thumb" alt="SAT-SOLVER" src="https://opengraph.githubassets.com/1/prosenjitkundu/SAT-SOLVER" /></a>
-        <div class="project-caption">
-          <div class="project-title">@prosenjitkundu/SAT-SOLVER</div>
-          <div class="project-desc">Implemented Mastermind by modeling game constraints as Boolean formulas and solving with a SAT solver; supports codemaker and intelligent codebreaker (with/without color repetition).</div>
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Software Development Engineer (Backend)</div>
+          <div class="exp-company">Bank of New York Mellon (AI Hub Platform)</div>
         </div>
+        <div class="exp-date">Jul 2023 – Present | Chennai, India</div>
       </div>
-
-      <div class="project-card">
-        <a href="https://github.com/prosenjitkundu/Image-Classification" target="_blank" rel="noopener"><img class="project-thumb" alt="Image Classification" src="https://opengraph.githubassets.com/1/prosenjitkundu/Image-Classification" /></a>
-        <div class="project-caption">
-          <div class="project-title">@prosenjitkundu/Image-Classification</div>
-          <div class="project-desc">End-to-end land use image classification using custom CNNs and fine-tuned ResNet18 (EuroSAT).</div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <a href="https://github.com/prosenjitkundu/Covid-data-Extraction" target="_blank" rel="noopener"><img class="project-thumb" alt="Covid data extraction" src="https://opengraph.githubassets.com/1/prosenjitkundu/Covid-data-Extraction" /></a>
-        <div class="project-caption">
-          <div class="project-title">@prosenjitkundu/Covid-data-Extraction</div>
-          <div class="project-desc">Real-time data extraction pipeline using Python + PLY to parse and map COVID-19 stats from HTML.</div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <a href="https://github.com/prosenjitkundu/Socket-Programming" target="_blank" rel="noopener"><img class="project-thumb" alt="Socket Programming" src="https://opengraph.githubassets.com/1/prosenjitkundu/Socket-Programming" /></a>
-        <div class="project-caption">
-          <div class="project-title">@prosenjitkundu/Socket-Programming</div>
-          <div class="project-desc">Concurrent multi-client file editor built with TCP sockets and POSIX threads; fine-grained locking and FTP-style operations.</div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <a href="https://github.com/prosenjitkundu/DexterPay-UI" target="_blank" rel="noopener"><img class="project-thumb" alt="DexterPay-UI" src="https://opengraph.githubassets.com/1/prosenjitkundu/DexterPay-UI" /></a>
-        <div class="project-caption">
-          <div class="project-title">@prosenjitkundu/DexterPay-UI</div>
-          <div class="project-desc">Startup idea: building a Payment Gateway similar to RazorPay (UI & prototype).</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Education -->
-  <section id="education">
-    <h2>Education</h2>
-    <div class="card">
-      <h3>Indian Institute of Technology Kharagpur</h3>
-      <div class="meta">M.Tech in Computer Science & Engineering | 2021 – 2023</div>
-      <p>DGPA: 8.72 / 10</p>
-      <div class="coursework"><strong>Relevant Coursework:</strong> Design and Analysis of Algorithms, Computational Geometry, Database Management Systems, Advanced Operating Systems, Artificial Intelligence, Machine Learning, Deep Learning</div>
-    </div>
-
-    <div class="card">
-      <h3>Cooch Behar Government Engineering College</h3>
-      <div class="meta">B.Tech in Computer Science & Engineering | 2016 – 2020</div>
-      <p>DGPA: 8.35 / 10</p>
-      <div class="coursework"><strong>Relevant Coursework:</strong> Operating Systems, Computer Organization, Object-Oriented Programming, Theory of Computation, Data Structures & Algorithms, Computer Networking</div>
-    </div>
-  </section>
-
-  <!-- Certifications & Achievements -->
-  <section id="certification">
-    <h2>Certifications & Achievements</h2>
-    <div class="cert-grid">
-      <div class="cert-card">
-        <div class="cert-badge" aria-hidden="true">
-          <svg width="72" height="44" viewBox="0 0 72 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NPTEL">
-            <rect rx="6" width="72" height="44" fill="#0B3D91"/>
-            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial" font-size="11" fill="#fff">NPTEL</text>
-          </svg>
-        </div>
-        <div class="cert-info">
-          <div class="cert-title">Data Base Management System (DBMS)</div>
-          <div class="cert-meta">NPTEL · IIT Kharagpur · Feb–Apr 2019 · Elite</div>
-          <div class="cert-links">Roll No: NPTEL19CS12S41270154 · <a href="https://drive.google.com/file/d/1bfb83wKRctYDpvqN1pCeIgUZLHF_rgfA/view?usp=sharing" target="_blank" rel="noopener">Certificate</a></div>
-        </div>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-badge" aria-hidden="true">
-          <svg width="72" height="44" viewBox="0 0 72 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Coursera">
-            <rect rx="6" width="72" height="44" fill="#2A73CC"/>
-            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial" font-size="10" fill="#fff">Coursera</text>
-          </svg>
-        </div>
-        <div class="cert-info">
-          <div class="cert-title">Google Data Analytics — Professional Certificate</div>
-          <div class="cert-meta">Google (via Coursera) · Completed June 15, 2021</div>
-          <div class="cert-links">Skills: Spreadsheets, SQL, Tableau, R · <a href="https://coursera.org/verify/professional-cert/N3RB9RULB6QS" target="_blank" rel="noopener">Verification</a></div>
-        </div>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-badge" aria-hidden="true">
-          <svg width="72" height="44" viewBox="0 0 72 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DeepLearning.AI / Stanford">
-            <rect rx="6" width="72" height="44" fill="#111827"/>
-            <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial" font-size="8.5" fill="#fff">DeepLearning.AI</text>
-            <text x="50%" y="75%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial" font-size="7" fill="#cbd5e1">Stanford</text>
-          </svg>
-        </div>
-        <div class="cert-info">
-          <div class="cert-title">Machine Learning — Specialization</div>
-          <div class="cert-meta">DeepLearning.AI & Stanford Online (via Coursera) · Completed Aug 4, 2022</div>
-          <div class="cert-links">Instructor: Andrew Ng · <a href="https://coursera.org/verify/specialization/YLX6R87CVFPB" target="_blank" rel="noopener">Verification</a></div>
-        </div>
-      </div>
-      <div class="cert-card">
-        <div class="cert-badge" aria-hidden="true">
-          <svg width="72" height="44" viewBox="0 0 72 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="IBM">
-            <rect rx="6" width="72" height="44" fill="#0F62FE"/>
-            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle"
-                  font-family="Inter, Arial" font-size="11" fill="#fff">
-              IBM
-            </text>
-          </svg>
-        </div>
-
-        <div class="cert-info">
-          <div class="cert-title">IBM Data Analyst — Professional Certificate</div>
-          <div class="cert-meta">
-            IBM (via Coursera) · Completed Jul 16, 2021 · 9 Courses
-          </div>
-          <div class="cert-links">
-            Skills: Excel, SQL, Python, Relational Databases, Data Visualization, Cognos Analytics ·
-            <a href="https://coursera.org/verify/professional-cert/8FUQ38RMWXYA"
-               target="_blank" rel="noopener">
-              Verification
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="cert-card">
-        <div class="cert-badge" aria-hidden="true">
-          <svg width="72" height="44" viewBox="0 0 72 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LeetCode">
-            <rect rx="6" width="72" height="44" fill="#FFA116"/>
-            <text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial" font-size="10" fill="#111">LeetCode</text>
-          </svg>
-        </div>
-        <div class="cert-info">
-          <div class="cert-title">LeetCode — Competitive Programming</div>
-          <div class="cert-meta">Solved 900+ problems · Peak rating: 1576 · Top 4% worldwide</div>
-          <div class="cert-links"><a href="https://leetcode.com/u/_pros_" target="_blank" rel="noopener">View profile</a></div>
-        </div>
-      </div>
-
-      <div class="cert-card">
-        <div class="cert-badge" aria-hidden="true">
-          <svg width="72" height="44" viewBox="0 0 72 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GATE">
-            <rect rx="6" width="72" height="44" fill="#8B2DFF"/>
-            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial" font-size="10" fill="#fff">GATE</text>
-          </svg>
-        </div>
-        <div class="cert-info">
-          <div class="cert-title">GATE CSE 2021</div>
-          <div class="cert-meta">All India Rank (AIR) 378 · Top 0.4 percentile</div>
-          <div class="cert-links">Year: 2021</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Positions of Responsibility -->
-  <section id="por">
-    <h2>Positions of Responsibility</h2>
-    <div class="card">
-      <h3>Roles & Involvements</h3>
-      <ul class="por-list">
-        <li>
-          <span class="por-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M4 19h16M4 4h16v8H4z"/></svg></span>
-          <span class="por-role">Teaching Assistant</span>
-          <span class="por-org"> — Programming and Data Structures (CS19003), IIT KGP</span>
-          <span class="por-date"> — Autumn '22</span>
-        </li>
-
-        <li>
-          <span class="por-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 21l9-18 9 18H3z"/></svg></span>
-          <span class="por-role">Teaching Assistant</span>
-          <span class="por-org"> — Computational Geometry (CS60064), IIT KGP</span>
-          <span class="por-date"> — Spring '23</span>
-        </li>
-
-        <li>
-          <span class="por-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M14 3l7 7-4 4-7-7 4-4zM2 21l10-10"/></svg></span>
-          <span class="por-role">Senate Member</span>
-          <span class="por-org"> — Educational Regulatory, Cooch Behar Government Engineering College (CGEC)</span>
-        </li>
-
-        <li>
-          <span class="por-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M16 18l6-6-6-6M8 6L2 12l6 6"/></svg></span>
-          <span class="por-role">Member</span>
-          <span class="por-org"> — Coding Club, Cooch Behar Government Engineering College (CGEC)</span>
-        </li>
-
-        <li>
-          <span class="por-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M2 20s4-4 7-4 7 4 7 4"/><path d="M12 12a4 4 0 10-4-4"/></svg></span>
-          <span class="por-role">Volunteer</span>
-          <span class="por-org"> — India Tribal Care Trust (Spread smiles by spreading education)</span>
-          <span class="por-date"> — Dec 2022 - May 2023</span>
-        </li>
+      <ul class="exp-list">
+        <li>Designed and scaled Java/Spring Boot microservices handling <strong>50,000+ daily requests</strong> with <strong>99.9% uptime</strong>.</li>
+        <li>Implemented <strong>Event-Driven Architecture</strong> using Apache Kafka for reliable, asynchronous data processing.</li>
+        <li>Optimized API latency by <strong>30%</strong> using Caffeine Cache and tuning complex Oracle SQL queries.</li>
+        <li>Built secure <strong>GenAI integrations</strong> (LLMs) for semantic search and document interpretation, ensuring data governance.</li>
+        <li>Managed CI/CD pipelines (GitLab, Docker, Kubernetes) and production monitoring (Splunk).</li>
       </ul>
     </div>
   </section>
 
-  <div id="contact" style="height:1px;margin-top:-80px;visibility:hidden;"></div>
+  <section id="skills">
+    <h2><i class="fas fa-layer-group"></i> Technical Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-box">
+        <i class="fab fa-java"></i>
+        <h4>Backend Engineering</h4>
+        <p>Java (8, 11, 17, 21), Spring Boot, Spring MVC, Spring Security, Hibernate (JPA), RESTful APIs</p>
+      </div>
+      <div class="skill-box">
+        <i class="fas fa-network-wired"></i>
+        <h4>Distributed Systems</h4>
+        <p>Apache Kafka, Event-Driven Architecture, Microservices, Horizontal Scaling, System Design</p>
+      </div>
+      <div class="skill-box">
+        <i class="fas fa-database"></i>
+        <h4>Data Management</h4>
+        <p>Oracle SQL, PostgreSQL, Caffeine Cache, Query Optimization, Transaction Management</p>
+      </div>
+      <div class="skill-box">
+        <i class="fab fa-docker"></i>
+        <h4>DevOps & Cloud</h4>
+        <p>Docker, Kubernetes, GitLab CI/CD, AWS S3, GCP App Engine, Liquibase, Maven</p>
+      </div>
+      <div class="skill-box">
+        <i class="fas fa-robot"></i>
+        <h4>AI & GenAI</h4>
+        <p>LLM Integration (GPT, Claude), Semantic Search, Vector Embeddings, RAG, Python</p>
+      </div>
+      <div class="skill-box">
+        <i class="fas fa-laptop-code"></i>
+        <h4>Frontend & Quality</h4>
+        <p>Angular, JavaScript, HTML/CSS, JUnit, Mockito, Splunk Monitoring, OOP, DSA</p>
+      </div>
+    </div>
+  </section>
 
-  <footer>© 2026 Prosenjit Kundu · Backend & Full Stack Developer</footer>
+  <section id="projects">
+    <h2><i class="fas fa-laptop-code"></i> Projects</h2>
+    <div class="projects-grid">
+
+      <a href="https://github.com/prosenjitkundu/DexterPay-UI" target="_blank" class="project-card">
+        <img src="https://opengraph.githubassets.com/1/prosenjitkundu/DexterPay-UI" class="project-img" alt="DexterPay">
+        <div class="project-content">
+          <div class="project-title">DexterPay (Distributed System)</div>
+          <div class="project-desc">Designed a scalable payment gateway architecture. Focused on Microservices patterns, idempotency, and containerization.</div>
+          <div class="project-tech">
+            <span class="tech-tag">Java</span>
+            <span class="tech-tag">Spring Boot</span>
+            <span class="tech-tag">Docker</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://github.com/prosenjitkundu/Socket-Programming" target="_blank" class="project-card">
+        <img src="https://opengraph.githubassets.com/1/prosenjitkundu/Socket-Programming" class="project-img" alt="Socket Prog">
+        <div class="project-content">
+          <div class="project-title">Concurrent File System</div>
+          <div class="project-desc">Multi-client file editor using TCP Sockets and POSIX threads. Implemented fine-grained locking for concurrency safety.</div>
+          <div class="project-tech">
+            <span class="tech-tag">C/C++</span>
+            <span class="tech-tag">OS Internals</span>
+            <span class="tech-tag">Sockets</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://github.com/prosenjitkundu/SAT-SOLVER" target="_blank" class="project-card">
+        <img src="https://opengraph.githubassets.com/1/prosenjitkundu/SAT-SOLVER" class="project-img" alt="SAT Solver">
+        <div class="project-content">
+          <div class="project-title">SAT-Solver Engine</div>
+          <div class="project-desc">Intelligent game logic engine modeling Mastermind constraints as Boolean formulas using SAT solvers.</div>
+          <div class="project-tech">
+            <span class="tech-tag">Algorithms</span>
+            <span class="tech-tag">AI/Logic</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://github.com/prosenjitkundu/Image-Classification" target="_blank" class="project-card">
+        <img src="https://opengraph.githubassets.com/1/prosenjitkundu/Image-Classification" class="project-img" alt="Image Class">
+        <div class="project-content">
+          <div class="project-title">Land Use Classification</div>
+          <div class="project-desc">End-to-end image classification using custom CNNs and fine-tuned ResNet18 on the EuroSAT dataset.</div>
+          <div class="project-tech">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">PyTorch</span>
+            <span class="tech-tag">CNN</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://github.com/prosenjitkundu/Covid-data-Extraction" target="_blank" class="project-card">
+        <img src="https://opengraph.githubassets.com/1/prosenjitkundu/Covid-data-Extraction" class="project-img" alt="Covid Data">
+        <div class="project-content">
+          <div class="project-title">Covid Data Extraction</div>
+          <div class="project-desc">Real-time data extraction pipeline using Python + PLY to parse and map COVID-19 stats from HTML sources.</div>
+          <div class="project-tech">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">Web Scraping</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <section id="certifications">
+    <h2><i class="fas fa-certificate"></i> Certifications & Achievements</h2>
+    <div class="cert-grid">
+
+      <div class="cert-card">
+        <div class="cert-icon"><i class="fas fa-trophy"></i></div>
+        <div class="cert-info">
+          <h4>GATE CSE 2021 Qualified</h4>
+          <p>AIR 378 (Top 0.4% in India)</p>
+        </div>
+      </div>
+
+      <a href="https://leetcode.com/u/_pros_" target="_blank" class="cert-card">
+        <div class="cert-icon"><i class="fas fa-code"></i></div>
+        <div class="cert-info">
+          <h4>LeetCode Competitive Programming</h4>
+          <p>900+ Problems Solved | Top 4% Worldwide</p>
+          <span class="cert-link">View Profile <i class="fas fa-external-link-alt"></i></span>
+        </div>
+      </a>
+
+      <a href="https://coursera.org/verify/specialization/YLX6R87CVFPB" target="_blank" class="cert-card">
+        <div class="cert-icon"><i class="fas fa-brain"></i></div>
+        <div class="cert-info">
+          <h4>Machine Learning Specialization</h4>
+          <p>Stanford Online & DeepLearning.AI</p>
+          <span class="cert-link">Verify Credential <i class="fas fa-external-link-alt"></i></span>
+        </div>
+      </a>
+
+      <a href="https://coursera.org/verify/professional-cert/N3RB9RULB6QS" target="_blank" class="cert-card">
+        <div class="cert-icon"><i class="fas fa-chart-bar"></i></div>
+        <div class="cert-info">
+          <h4>Google Data Analytics</h4>
+          <p>Professional Certificate</p>
+          <span class="cert-link">Verify Credential <i class="fas fa-external-link-alt"></i></span>
+        </div>
+      </a>
+
+      <a href="https://coursera.org/verify/professional-cert/8FUQ38RMWXYA" target="_blank" class="cert-card">
+        <div class="cert-icon">
+          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 8v4h24v-4h-24zm0 6v4h6v-4h-6zm8 0v4h8v-4h-8zm10 0v4h6v-4h-6zm-18 6v4h24v-4h-24z"/>
+          </svg>
+        </div>
+        <div class="cert-info">
+          <h4>IBM Data Analyst</h4>
+          <p>Professional Certificate</p>
+          <span class="cert-link">Verify Credential <i class="fas fa-external-link-alt"></i></span>
+        </div>
+      </a>
+
+      <a href="https://drive.google.com/file/d/1bfb83wKRctYDpvqN1pCeIgUZLHF_rgfA/view?usp=sharing" target="_blank" class="cert-card">
+        <div class="cert-icon"><i class="fas fa-database"></i></div>
+        <div class="cert-info">
+          <h4>DBMS Certification</h4>
+          <p>NPTEL Elite Certification (IIT Kharagpur)</p>
+          <span class="cert-link">View Certificate <i class="fas fa-external-link-alt"></i></span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <section id="education">
+    <h2><i class="fas fa-university"></i> Education</h2>
+    <div class="card">
+      <div style="margin-bottom: 20px; border-bottom: 1px dashed var(--border); padding-bottom: 16px;">
+        <h3 style="margin-bottom: 4px;">Indian Institute of Technology (IIT), Kharagpur</h3>
+        <p style="color: var(--accent); font-weight: 600;">M.Tech in Computer Science & Engineering</p>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">2021 – 2023 | DGPA: 8.72</p>
+      </div>
+      <div>
+        <h3 style="margin-bottom: 4px;">Cooch Behar Government Engineering College</h3>
+        <p style="color: var(--accent); font-weight: 600;">B.Tech in Computer Science & Engineering</p>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">2016 – 2020 | DGPA: 8.35</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="por">
+    <h2><i class="fas fa-users"></i> Positions of Responsibility</h2>
+    <div class="card">
+      <ul class="exp-list">
+        <li><strong>Teaching Assistant:</strong> Computational Geometry (CS60064) & Programming (CS19003) at IIT Kharagpur.</li>
+        <li><strong>Senate Member:</strong> Educational Regulatory Body, Cooch Behar Government Engineering College.</li>
+        <li><strong>Member:</strong> Coding Club, Cooch Behar Government Engineering College.</li>
+        <li><strong>Volunteer:</strong> India Tribal Care Trust (Dec 2022 - May 2023).</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer style="text-align: center; color: var(--text-muted); padding: 40px 0; font-size: 0.9rem;">
+    <p>© 2026 Prosenjit Kundu. Built with modern web standards.</p>
+  </footer>
+
 </div>
 
-<!-- Font Awesome for theme toggle icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script>
-  // Theme Toggle Functionality
-  const themeToggle = document.getElementById('themeToggle');
+  // SIDEBAR LOGIC
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+
+  function toggleSidebar() {
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+  }
+
+  // THEME LOGIC
   const html = document.documentElement;
-  // Check for saved user preference, if any, on load
-  const currentTheme = localStorage.getItem('theme') || 'light';
-  html.setAttribute('data-theme', currentTheme);
-  updateThemeIcon(currentTheme);
-  // Toggle theme on button click
-  themeToggle.addEventListener('click', () => {
-    const currentTheme = html.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    html.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateThemeIcon(newTheme);
-  });
-  function updateThemeIcon(theme) {
-    const themeIcon = themeToggle.querySelector('i');
-    if (theme === 'dark') {
-      themeIcon.classList.remove('fa-moon');
-      themeIcon.classList.add('fa-sun');
+  const themeBtn = document.querySelector('.theme-toggle i');
+
+  // Check local storage
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', savedTheme);
+  updateIcon(savedTheme);
+
+  function toggleTheme() {
+    const current = html.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateIcon(next);
+  }
+
+  function updateIcon(theme) {
+    if(theme === 'dark') {
+      themeBtn.classList.remove('fa-moon');
+      themeBtn.classList.add('fa-sun');
     } else {
-      themeIcon.classList.remove('fa-sun');
-      themeIcon.classList.add('fa-moon');
+      themeBtn.classList.remove('fa-sun');
+      themeBtn.classList.add('fa-moon');
     }
   }
-  // Sidebar functionality
-  const sidebar = document.getElementById('sidebar'),
-        overlay = document.getElementById('overlay'),
-        hamburger = document.getElementById('hamburger');
-
-  function openSidebar(){
-    sidebar.classList.add('active');
-    overlay.classList.add('active');
-    sidebar.setAttribute('aria-hidden','false');
-    hamburger.setAttribute('aria-expanded','true');
-    const first = sidebar.querySelector('a');
-    if(first) first.focus();
-  }
-  function closeSidebar(){
-    sidebar.classList.remove('active'); overlay.classList.remove('active');
-    sidebar.setAttribute('aria-hidden','true'); hamburger.setAttribute('aria-expanded','false');
-    hamburger.focus();
-  }
-  function toggleSidebar(){ sidebar.classList.contains('active')?closeSidebar():openSidebar(); }
-
-  hamburger.addEventListener('click', toggleSidebar);
-  hamburger.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleSidebar(); }});
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && sidebar.classList.contains('active')) closeSidebar(); });
-
-  // smooth scrolling + close sidebar
-  sidebar.querySelectorAll('a[data-target]').forEach(a=>{
-    a.addEventListener('click', function(ev){
-      ev.preventDefault();
-      const target=this.getAttribute('data-target');
-      if(!target){ closeSidebar(); return; }
-      if(target==='home'){ window.scrollTo({top:0,behavior:'smooth'}); closeSidebar(); return; }
-      const el=document.getElementById(target);
-      if(el){ const yOffset=-20; const y=el.getBoundingClientRect().top+window.pageYOffset+yOffset; window.scrollTo({top:y,behavior:'smooth'}); }
-      setTimeout(closeSidebar,200);
-    });
-  });
-
-  document.querySelectorAll('a[href^="#"]').forEach(a=>{
-    a.addEventListener('click', (ev)=>{
-      const href=a.getAttribute('href');
-      if(href && href.startsWith('#')){
-        const id=href.slice(1); const el=document.getElementById(id);
-        if(el){ ev.preventDefault(); const y=el.getBoundingClientRect().top+window.pageYOffset-20; window.scrollTo({top:y,behavior:'smooth'}); closeSidebar(); }
-      }
-    });
-  });
-
-  window.addEventListener('resize', ()=>{ if(window.innerWidth>880 && sidebar.classList.contains('active')) closeSidebar(); });
 </script>
 
 </body>
