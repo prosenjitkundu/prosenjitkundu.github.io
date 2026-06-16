@@ -8,210 +8,229 @@
 
   <style>
     :root{
-      --bg-primary:#020617; --bg-secondary:#0f172a; --card-bg:#020617;
-      --border:#1e293b; --text-primary:#e5e7eb; --text-secondary:#94a3b8;
-      --accent:#38bdf8; --cert-bg:rgba(255,255,255,0.02);
+      --bg-primary:#0a0e1a; --bg-secondary:#0f1729;
+      --card-bg:#0d1320; --card-bg-hover:#111a2e;
+      --border:#1f2b42; --border-light:#2a3a58;
+      --text-primary:#e8ecf4; --text-secondary:#8b97ad; --text-tertiary:#5b6880;
+      --accent:#5eead4; --accent-dim:#2dd4bf; --accent-glow:rgba(94,234,212,0.12);
+      --gold:#f0b86e;
+      --mono:'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace;
+      --sans:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
     body{
-      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-      background:linear-gradient(180deg,var(--bg-primary),var(--bg-secondary));
+      font-family:var(--sans);
+      background:var(--bg-primary);
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(94,234,212,0.08), transparent),
+        radial-gradient(ellipse 60% 40% at 90% 10%, rgba(240,184,110,0.05), transparent);
       color:var(--text-primary);line-height:1.7;
     }
     a{color:var(--accent);text-decoration:none}
-    .container{max-width:1100px;margin:auto;padding:48px 24px}
+    .container{max-width:1080px;margin:auto;padding:64px 28px}
+
+    /* Eyebrow / section labels - terminal-style */
+    .eyebrow{
+      font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
+      color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:18px;
+    }
+    .eyebrow::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent-glow);flex:0 0 8px}
 
     /* Header / profile */
-    header#home{margin-bottom:24px;padding-top:24px}
-    .profile{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:nowrap}
+    header#home{margin-bottom:8px;padding-top:8px}
+    .profile{display:flex;align-items:flex-start;justify-content:space-between;gap:40px;flex-wrap:nowrap}
     .name-block{flex:1 1 auto;min-width:0}
-    h1.name{font-size:2.6rem;margin-bottom:8px;word-break:break-word;letter-spacing:.4px}
+
+    .name-tag{font-family:var(--mono);font-size:.85rem;color:var(--text-tertiary);margin-bottom:14px;letter-spacing:.02em}
+    .name-tag .bracket{color:var(--accent)}
+
+    h1.name{font-size:3rem;margin-bottom:6px;word-break:break-word;letter-spacing:-.01em;font-weight:700;line-height:1.1}
+    .role-line{font-size:1.15rem;color:var(--text-secondary);margin-bottom:20px;font-weight:500}
+    .role-line .pipe{color:var(--border-light);margin:0 10px}
+    .role-line .hl{color:var(--accent-dim)}
 
     /* top links with icons */
-    .top-links{margin-top:8px;display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center}
-    .top-link{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;text-decoration:none;color:var(--accent);background:transparent;font-weight:600;transition:background .15s,transform .08s}
-    .top-link:hover{background:rgba(56,189,248,0.06);transform:translateY(-1px)}
-    .top-link .icon{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;color:var(--accent);flex:0 0 18px}
-    .top-link .label{font-size:.95rem;color:var(--accent)}
+    .top-links{margin-top:4px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .top-link{
+      display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:7px;
+      text-decoration:none;color:var(--text-secondary);background:var(--card-bg);
+      font-weight:500;font-size:.88rem;border:1px solid var(--border);
+      transition:border-color .15s,color .15s,transform .1s;
+    }
+    .top-link:hover{border-color:var(--accent-dim);color:var(--accent);transform:translateY(-2px)}
+    .top-link .icon{width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 16px}
 
-    .sub-lines{color:var(--text-secondary);font-size:1rem;margin-top:10px;display:flex;flex-direction:column;gap:6px}
+    .sub-lines{color:var(--text-tertiary);font-size:.92rem;margin-top:18px;display:flex;flex-direction:column;gap:5px;font-family:var(--mono)}
 
-    /* avatar: increased and aligned with left details */
     .avatar-square{
-      width: 240px;
-      height: 240px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 2px solid var(--border);
-      flex: 0 0 240px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.05));
+      width: 200px; height: 200px; object-fit: cover; border-radius: 12px;
+      border: 1px solid var(--border-light); flex: 0 0 200px;
+      filter: saturate(0.92);
     }
 
-    /* Hamburger (user provided style) - FIXED: transparent background so it matches page, white lines */
+    /* Hamburger */
     .hamburger {
-      position: fixed;
-      top: 24px;
-      left: 24px;
-      width: 28px;
-      height: 24px;
-      cursor: pointer;
-      z-index: 1001;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      background: transparent; /* show underlying page gradient */
-      border: none;
-      padding: 4px;
-      border-radius: 6px;
+      position: fixed; top: 28px; left: 28px; width: 26px; height: 22px; cursor: pointer;
+      z-index: 1001; display: flex; flex-direction: column; justify-content: space-between;
+      background: transparent; border: none; padding: 4px; border-radius: 6px;
     }
-
-    .hamburger:focus {
-      outline: 2px solid rgba(255,255,255,0.12);
-      outline-offset: 2px;
-    }
-
-    .hamburger span {
-      display: block;
-      height: 3px;
-      background: #ffffff; /* ensure pure white lines */
-      border-radius: 4px;
-      transition: transform 0.18s ease, opacity 0.18s ease;
-    }
+    .hamburger:focus{outline:2px solid var(--accent-glow);outline-offset:2px}
+    .hamburger span{display:block;height:2px;background:var(--text-secondary);border-radius:2px;transition:transform .18s ease,opacity .18s ease,background .15s}
+    .hamburger:hover span{background:var(--accent)}
 
     /* Sidebar */
     .sidebar{
-      position:fixed;top:0;left:-280px;width:280px;height:100%;background:var(--bg-secondary);border-right:1px solid var(--border);
-      padding:90px 20px;display:flex;flex-direction:column;gap:18px;transition:left .28s cubic-bezier(.2,.9,.2,1);z-index:1101;box-shadow:12px 0 30px rgba(0,0,0,0.6)
+      position:fixed;top:0;left:-300px;width:300px;height:100%;background:var(--bg-secondary);
+      border-right:1px solid var(--border);padding:96px 28px;display:flex;flex-direction:column;gap:6px;
+      transition:left .3s cubic-bezier(.2,.9,.2,1);z-index:1101;box-shadow:20px 0 40px rgba(0,0,0,0.5)
     }
     .sidebar.active{left:0}
-    .sidebar a{font-size:1rem;color:var(--text-primary);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px}
-    .sidebar a:hover{color:var(--accent);background:rgba(56,189,248,0.04)}
+    .sidebar a{
+      font-size:.95rem;color:var(--text-secondary);text-decoration:none;font-weight:500;
+      padding:11px 12px;border-radius:8px;font-family:var(--mono);display:flex;align-items:center;gap:10px;
+      transition:color .15s,background .15s;
+    }
+    .sidebar a::before{content:'›';color:var(--border-light);transition:color .15s}
+    .sidebar a:hover{color:var(--accent);background:var(--card-bg)}
+    .sidebar a:hover::before{color:var(--accent)}
 
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);opacity:0;pointer-events:none;transition:opacity .28s;z-index:1100}
+    .overlay{position:fixed;inset:0;background:rgba(2,4,10,0.7);opacity:0;pointer-events:none;transition:opacity .3s;z-index:1100;backdrop-filter:blur(2px)}
     .overlay.active{opacity:1;pointer-events:auto}
 
-    /* content sections */
-    section{margin-bottom:96px}
-    section h2{font-size:1.8rem;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px}
-    .card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:24px}
-    .card h3{font-size:1.2rem;margin-bottom:8px}
-    .meta{color:var(--text-secondary);font-size:.95rem;margin-bottom:14px}
-    .card p{margin-bottom:16px}
+    section{margin-bottom:88px}
+    section h2{font-size:1.7rem;margin-bottom:8px;font-weight:700;letter-spacing:-.01em}
+    .section-rule{height:1px;background:linear-gradient(90deg,var(--border-light),transparent);margin-bottom:28px}
 
-    /* about subsections */
-    .about-grid{display:flex;flex-direction:column;gap:16px}
-    .about-sub{margin-top:6px}
-    .about-sub h4{font-size:1.02rem;margin-bottom:8px;color:var(--text-primary)}
-    .about-sub p{color:var(--text-secondary);font-size:.95rem;line-height:1.5}
-    .hobby-list{color:var(--text-secondary);padding-left:18px;margin-top:6px}
-    .hobby-list li{margin-bottom:8px}
+    .card{
+      background:var(--card-bg);border:1px solid var(--border);border-radius:14px;
+      padding:30px;margin-bottom:20px;transition:border-color .2s;
+    }
+    .card:hover{border-color:var(--border-light)}
+    .card h3{font-size:1.18rem;margin-bottom:6px;font-weight:600}
+    .meta{color:var(--text-tertiary);font-size:.88rem;margin-bottom:18px;font-family:var(--mono)}
+    .card p{margin-bottom:14px;color:var(--text-secondary);font-size:.97rem}
+    .card p:last-child{margin-bottom:0}
 
-    /* contact items */
-    .contact-row{margin-top:12px;display:flex;flex-direction:column;gap:10px;color:var(--text-secondary);font-size:.96rem}
-    .contact-item{display:flex;align-items:center;gap:10px}
-    .contact-item .icon{width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;color:var(--accent);flex:0 0 20px}
-    .contact-item .text{color:var(--text-secondary)}
+    .impact-row{display:flex;gap:28px;margin:18px 0 22px;flex-wrap:wrap}
+    .impact-stat{font-family:var(--mono)}
+    .impact-stat .num{font-size:1.5rem;font-weight:700;color:var(--accent);display:block;line-height:1}
+    .impact-stat .label{font-size:.78rem;color:var(--text-tertiary);margin-top:4px}
 
-    /* rest (certs, projects, skills, por) */
-    .cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:12px}
-    .cert-card{display:flex;gap:14px;align-items:flex-start;background:var(--cert-bg);border:1px solid var(--border);padding:12px;border-radius:12px}
-    .cert-badge{width:82px;height:56px;flex:0 0 82px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.02)}
+    .about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:24px}
+    .about-sub{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:26px}
+    .about-sub h4{font-size:.82rem;margin-bottom:14px;color:var(--accent);font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase}
+    .about-sub p{color:var(--text-secondary);font-size:.95rem;line-height:1.6;margin-bottom:10px}
+    .hobby-list{color:var(--text-secondary);list-style:none;margin-top:4px;display:flex;flex-direction:column;gap:9px}
+    .hobby-list li{display:flex;align-items:baseline;gap:10px;font-size:.93rem}
+    .hobby-list li::before{content:'—';color:var(--text-tertiary);flex:0 0 auto}
+
+    .contact-row{display:flex;flex-direction:column;gap:13px;color:var(--text-secondary);font-size:.93rem}
+    .contact-item{display:flex;align-items:center;gap:11px}
+    .contact-item .icon{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;color:var(--accent);flex:0 0 18px}
+    .contact-item .text{color:var(--text-secondary);font-family:var(--mono);font-size:.88rem}
+
+    .cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:16px}
+    .cert-card{display:flex;gap:16px;align-items:flex-start;background:var(--card-bg);border:1px solid var(--border);padding:18px;border-radius:12px;transition:border-color .2s}
+    .cert-card:hover{border-color:var(--border-light)}
+    .cert-badge{width:64px;height:64px;flex:0 0 64px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px}
     .cert-info{flex:1 1 auto}
-    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:8px}
-    .project-thumb{width:100%;height:160px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+    .cert-title{font-weight:600;font-size:.95rem;margin-bottom:4px}
+    .cert-meta{color:var(--text-tertiary);font-size:.82rem;margin-bottom:6px}
+    .cert-links{font-size:.82rem;font-family:var(--mono);color:var(--text-secondary)}
 
-    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:12px}
-    .skill-card{background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(0,0,0,0.02));border:1px solid var(--border);border-radius:12px;padding:14px}
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+    .project-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s,transform .15s}
+    .project-card:hover{border-color:var(--accent-dim);transform:translateY(-3px)}
+    .project-thumb{width:100%;height:150px;object-fit:cover;display:block;border-bottom:1px solid var(--border)}
+    .project-caption{padding:18px}
+    .project-title{font-family:var(--mono);font-size:.85rem;color:var(--accent);margin-bottom:8px;word-break:break-word}
+    .project-desc{font-size:.88rem;color:var(--text-secondary);line-height:1.55}
 
-    .por-list{padding-left:6px;margin-top:8px;list-style:none}
-    .por-list li{margin-bottom:12px;color:var(--text-primary);display:flex;align-items:flex-start;gap:10px}
-    .por-icon{width:22px;height:22px;flex:0 0 22px;display:inline-flex;align-items:center;justify-content:center;margin-top:2px}
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+    .skill-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:18px;transition:border-color .2s}
+    .skill-card:hover{border-color:var(--border-light)}
+    .skill-title{font-size:.78rem;font-weight:700;color:var(--accent);font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+    .skill-list{color:var(--text-secondary);font-size:.89rem;line-height:1.65}
 
-    footer{border-top:1px solid var(--border);padding-top:24px;color:var(--text-secondary);font-size:.9rem;text-align:center}
+    .por-list{list-style:none;display:flex;flex-direction:column;gap:16px}
+    .por-list li{display:flex;align-items:flex-start;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+    .por-list li:last-child{border-bottom:none;padding-bottom:0}
+    .por-icon{width:20px;height:20px;flex:0 0 20px;display:inline-flex;align-items:center;justify-content:center;margin-top:2px;color:var(--accent)}
+    .por-text{font-size:.95rem;color:var(--text-secondary)}
+    .por-role{color:var(--text-primary);font-weight:600}
+    .por-date{color:var(--text-tertiary);font-family:var(--mono);font-size:.85rem}
 
-    /* responsive */
-    @media(max-width:1000px){ .avatar-square{width:200px;height:200px;flex:0 0 200px} }
-    @media(max-width:880px){ .avatar-square{width:160px;height:160px;flex:0 0 160px} }
-    @media(max-width:720px){ .profile{flex-direction:column;align-items:flex-start;gap:16px}.avatar-square{width:120px;height:120px;flex:0 0 120px;align-self:flex-end}.sidebar{width:85%;left:-90%}.top-link .label{display:none} }
+    footer{border-top:1px solid var(--border);padding-top:28px;color:var(--text-tertiary);font-size:.85rem;text-align:center;font-family:var(--mono)}
+
+    @media(max-width:880px){
+      .avatar-square{width:140px;height:140px;flex:0 0 140px}
+      .about-grid{grid-template-columns:1fr}
+      h1.name{font-size:2.2rem}
+    }
+    @media(max-width:680px){
+      .profile{flex-direction:column-reverse;align-items:flex-start;gap:20px}
+      .avatar-square{width:110px;height:110px;flex:0 0 110px}
+      .sidebar{width:82%;left:-85%}
+      .container{padding:56px 20px}
+    }
   </style>
 </head>
 <body>
 
-<!-- HAMBURGER BUTTON -->
 <button id="hamburger" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
-  <span></span>
-  <span></span>
-  <span></span>
+  <span></span><span></span><span></span>
 </button>
 
-<!-- SIDE NAV (order matches desired menu) -->
 <nav id="sidebar" class="sidebar" aria-hidden="true">
-  <a href="#home" data-target="home">Home</a>
-  <a href="#about" data-target="about">About</a>
-  <a href="#experience" data-target="experience">Experience ⭐</a>
-  <a href="#skills" data-target="skills">Skills ⭐</a>
-  <a href="#projects" data-target="projects">Projects</a>
-  <a href="#education" data-target="education">Education</a>
-  <a href="#certification" data-target="certification">Certifications & Achievements</a>
-  <a href="#por" data-target="por">Positions of Responsibility</a>
+  <a href="#home" data-target="home">home</a>
+  <a href="#about" data-target="about">about</a>
+  <a href="#experience" data-target="experience">experience</a>
+  <a href="#skills" data-target="skills">skills</a>
+  <a href="#projects" data-target="projects">projects</a>
+  <a href="#education" data-target="education">education</a>
+  <a href="#certification" data-target="certification">certifications</a>
+  <a href="#por" data-target="por">leadership</a>
 </nav>
 
 <div id="overlay" class="overlay" onclick="closeSidebar()"></div>
 
 <div class="container">
 
-  <!-- HOME / HEADER -->
   <header id="home" class="profile">
     <div class="name-block">
+      <div class="name-tag"><span class="bracket">~/</span>prosenjit-kundu<span class="bracket">$</span> whoami</div>
       <h1 class="name">Prosenjit Kundu</h1>
+      <div class="role-line">Backend Engineer <span class="pipe">/</span> <span class="hl">Distributed Systems</span> @ BNY</div>
 
       <div class="top-links" aria-hidden="false">
         <a class="top-link" href="https://github.com/prosenjitkundu" target="_blank" rel="noopener" aria-label="GitHub">
-            <span class="icon" aria-hidden="true">
-              <!-- GitHub -->
-              <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.1.82a7.6 7.6 0 012.01-.27c.68 0 1.36.09 2.01.27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z"/>
-              </svg>
-            </span>
-          <span class="label">GitHub</span>
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.1.82a7.6 7.6 0 012.01-.27c.68 0 1.36.09 2.01.27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+          </span>GitHub
         </a>
-
-<!--        <a class="top-link" href="https://gitlab.com/prosenjitkundu" target="_blank" rel="noopener" aria-label="GitLab">-->
-<!--            <span class="icon" aria-hidden="true">-->
-<!--              &lt;!&ndash; GitLab &ndash;&gt;-->
-<!--              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">-->
-<!--                <path d="M12 2l2.1 4.9 5.2.8-3.8 3.3L17 16l-5-3-5 3 .5-4.9L4.6 7.7l5.2-.8L12 2z"/>-->
-<!--              </svg>-->
-<!--            </span>-->
-<!--          <span class="label">GitLab</span>-->
-<!--        </a>-->
-
         <a class="top-link" href="https://www.linkedin.com/in/kundu-prosenjit" target="_blank" rel="noopener" aria-label="LinkedIn">
-            <span class="icon" aria-hidden="true">
-              <!-- LinkedIn -->
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4.98 3.5C4.98 4.6 4.12 5.5 3 5.5 1.88 5.5 1 4.6 1 3.5 1 2.4 1.88 1.5 3 1.5 4.12 1.5 4.98 2.4 4.98 3.5zM1.5 8.5h3v12H1.5zM9.5 8.5h2.8v1.6h.04c.39-.74 1.34-1.6 2.76-1.6 2.95 0 3.5 1.94 3.5 4.46V20.5h-3v-5.07c0-1.21-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.69V20.5h-3V8.5z"/>
-              </svg>
-            </span>
-          <span class="label">LinkedIn</span>
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4.98 3.5C4.98 4.6 4.12 5.5 3 5.5 1.88 5.5 1 4.6 1 3.5 1 2.4 1.88 1.5 3 1.5 4.12 1.5 4.98 2.4 4.98 3.5zM1.5 8.5h3v12H1.5zM9.5 8.5h2.8v1.6h.04c.39-.74 1.34-1.6 2.76-1.6 2.95 0 3.5 1.94 3.5 4.46V20.5h-3v-5.07c0-1.21-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.69V20.5h-3V8.5z"/>
+            </svg>
+          </span>LinkedIn
         </a>
-
         <a class="top-link" href="https://leetcode.com/u/_pros_" target="_blank" rel="noopener" aria-label="LeetCode">
-            <span class="icon" aria-hidden="true">
-              <!-- LeetCode -->
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12.5 3.1c.3-.2.8-.2 1.1.1l3.3 3.3a.9.9 0 010 1.3L10.1 14.6a.9.9 0 01-.7.2l-3.3-.7a.9.9 0 01-.6-1.4L9.5 4.2c.1-.3.4-.6.8-.8l2.2-.3zM20 14.5a1 1 0 01-1 1h-1.5l-2.2-2.3 1.2-1.5 2.5 2.1c.4.4.6 1 .1 1.7zM6 18c0 1 1 2 2.2 2h7.6A2.2 2.2 0 0018 18v-1.2H6V18z"/>
-              </svg>
-            </span>
-          <span class="label">LeetCode</span>
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.5 3.1c.3-.2.8-.2 1.1.1l3.3 3.3a.9.9 0 010 1.3L10.1 14.6a.9.9 0 01-.7.2l-3.3-.7a.9.9 0 01-.6-1.4L9.5 4.2c.1-.3.4-.6.8-.8l2.2-.3zM20 14.5a1 1 0 01-1 1h-1.5l-2.2-2.3 1.2-1.5 2.5 2.1c.4.4.6 1 .1 1.7zM6 18c0 1 1 2 2.2 2h7.6A2.2 2.2 0 0018 18v-1.2H6V18z"/>
+            </svg>
+          </span>LeetCode
         </a>
       </div>
 
       <div class="sub-lines" aria-hidden="false">
-        <span>🚀 Full Stack Developer | Bank Of New York</span>
-        <span>🎓 IIT KGP | CGEC</span>
-        <span>🏠 Durgapur to Chennai ✈</span>
+        <span># location: Chennai, IN · origin: Durgapur, WB</span>
+        <span># education: IIT Kharagpur · CGEC</span>
       </div>
     </div>
 
@@ -219,327 +238,269 @@
          alt="Prosenjit Kundu" class="avatar-square" />
   </header>
 
-  <!-- ABOUT (first after Home per menu order) -->
   <section id="about">
-    <h2>About</h2>
-    <div class="card about-grid">
+    <div class="eyebrow">01 — about</div>
+    <div class="section-rule"></div>
+    <div class="about-grid">
       <div class="about-sub">
         <h4>Work</h4>
-        <p>Backend / Full-Stack Software Engineer focused on building and operating scalable Java & Spring Boot microservices for enterprise fintech platforms.</p>
-        <p>Currently contributing to the AI Hub (ELIZA) — integrating GenAI, Kafka-based async processing, and production-grade observability.</p>
-      </div>
-
-      <div class="about-sub">
-        <h4>Hobby</h4>
-        <ul class="hobby-list">
-          <li>Volleyball (District Level)</li>
-          <li>Football</li>
-          <li>Listening Detective Stories — Feluda, Byomkesh Bakshi, Sherlock Holmes</li>
-          <li>Travelling</li>
-        </ul>
+        <p>Backend / Full-Stack Software Engineer focused on building and operating scalable Java &amp; Spring Boot microservices for enterprise fintech platforms.</p>
+        <p>Currently contributing to the AI Hub (ELIZA) at BNY — integrating GenAI workflows, Kafka-based async processing, WebSocket-driven real-time features, and production-grade observability on AWS.</p>
       </div>
 
       <div class="about-sub">
         <h4>Contact</h4>
-        <div class="contact-row" aria-label="contact details">
+        <div class="contact-row">
           <div class="contact-item">
-              <span class="icon" aria-hidden="true">
-                <!-- phone icon -->
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M22 16.92V21a1 1 0 0 1-1.09 1A19 19 0 0 1 3 4.09 1 1 0 0 1 4 3h4.09a1 1 0 0 1 1 .75c.12.72.4 1.83.88 2.8a1 1 0 0 1-.24 1.01L9.91 9.91a12 12 0 0 0 5.18 5.18l1.35-1.35a1 1 0 0 1 1.01-.24c.97.48 2.08.76 2.8.88a1 1 0 0 1 .75 1V22z"/>
-                </svg>
-              </span>
+            <span class="icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V21a1 1 0 0 1-1.09 1A19 19 0 0 1 3 4.09 1 1 0 0 1 4 3h4.09a1 1 0 0 1 1 .75c.12.72.4 1.83.88 2.8a1 1 0 0 1-.24 1.01L9.91 9.91a12 12 0 0 0 5.18 5.18l1.35-1.35a1 1 0 0 1 1.01-.24c.97.48 2.08.76 2.8.88a1 1 0 0 1 .75 1V22z"/></svg>
+            </span>
             <span class="text">+91 7602960364</span>
           </div>
-
           <div class="contact-item">
-              <span class="icon" aria-hidden="true">
-                <!-- email icon -->
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4 4h16v16H4z"></path>
-                  <path d="M22 6l-10 7L2 6"></path>
-                </svg>
-              </span>
+            <span class="icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+            </span>
             <span class="text">prosenjitkundu210@gmail.com</span>
           </div>
-
           <div class="contact-item">
-              <span class="icon" aria-hidden="true">
-                <!-- map pin icon -->
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"></path>
-                  <circle cx="12" cy="10" r="3" fill="currentColor"></circle>
-                </svg>
-              </span>
+            <span class="icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3" fill="currentColor"/></svg>
+            </span>
             <span class="text">Chennai, India</span>
           </div>
         </div>
       </div>
+
+      <div class="about-sub" style="grid-column: 1 / -1;">
+        <h4>Beyond Work</h4>
+        <ul class="hobby-list">
+          <li>Volleyball — District Level competitor</li>
+          <li>Football</li>
+          <li>Detective fiction — Feluda, Byomkesh Bakshi, Sherlock Holmes</li>
+          <li>Travelling</li>
+        </ul>
+      </div>
     </div>
   </section>
 
-  <!-- Experience -->
   <section id="experience">
-    <h2>Experience</h2>
+    <div class="eyebrow">02 — experience</div>
+    <div class="section-rule"></div>
     <div class="card">
-      <h3>Software Development Engineer – AI Hub Platform (ELIZA)</h3>
-      <div class="meta">Bank of New York Mellon | Jul 2023 – Present | Chennai</div>
+      <h3>Full Stack Developer II — AI Hub Platform (ELIZA)</h3>
+      <div class="meta">Bank of New York (BNY) · Jul 2023 – Present · Chennai</div>
 
-      <p>
-        In my role as a Software Development Engineer on the AI Hub Platform (ELIZA) at Bank of New York Mellon, I work on designing, developing, and operating scalable backend and full-stack systems for enterprise fintech use cases. I primarily build Java-based microservices using Java 17, Spring Boot, Spring MVC, and Hibernate (JPA), focusing on clean REST API contracts, fault tolerance, and high availability. These services support large-scale distributed workflows and consistently handle over 50,000 daily requests while maintaining 99.9% uptime in production environments.
-      </p>
+      <div class="impact-row">
+        <div class="impact-stat"><span class="num">50K+</span><span class="label">daily requests served</span></div>
+        <div class="impact-stat"><span class="num">99.9%</span><span class="label">uptime</span></div>
+        <div class="impact-stat"><span class="num">35%</span><span class="label">latency reduction</span></div>
+        <div class="impact-stat"><span class="num">3yr</span><span class="label">tenure</span></div>
+      </div>
 
-      <p>
-        I contribute across the full development lifecycle, from system design and architecture discussions to implementation, testing, deployment, and production support. My work involves implementing asynchronous, event-driven architectures using Apache Kafka to enable reliable inter-service communication and scalable data processing. I also collaborate closely with frontend teams using Angular, HTML, and CSS to deliver complete end-to-end features that align with product and platform requirements.
-      </p>
+      <p>Design, build, and operate Java 17 + Spring Boot microservices on the AI Hub Platform, supporting large-scale distributed workflows across enterprise fintech use cases — with clean REST API contracts, fault tolerance, and high availability as core design principles.</p>
 
-      <p>
-        A significant part of my role involves building and integrating GenAI-powered capabilities into enterprise systems. I have worked on solutions leveraging large language models to automate financial document interpretation, semantic search, and intelligent recommendations, while ensuring strict compliance with data privacy and regulatory requirements. To support this, I helped establish governance mechanisms and rule-based controls to enforce security, compliance, and responsible AI usage across the platform.
-      </p>
+      <p>Own features end-to-end: system design, implementation, testing, deployment, and production support. Built asynchronous, event-driven pipelines with Apache Kafka for reliable inter-service communication, and added WebSocket-based real-time channels for live status updates and notifications across the platform. Deployed and scaled services on AWS (S3, EC2) alongside Docker and Kubernetes.</p>
 
-      <p>
-        I actively focus on performance optimization and system reliability by tuning Oracle SQL queries, optimizing Hibernate usage, and introducing caching mechanisms such as Caffeine Cache, which resulted in measurable latency improvements. I also build and maintain CI/CD pipelines using GitLab CI/CD, Docker, Kubernetes, and Liquibase, significantly reducing deployment effort and improving release stability. Alongside development, I own production readiness, monitoring, and troubleshooting using tools like Splunk, and regularly collaborate with cross-functional teams while mentoring junior engineers and driving engineering best practices.
-      </p>
+      <p>Built and integrated GenAI capabilities — agent-based LLM workflows with RAG for financial document analysis, semantic search and recommendation systems using vector embeddings and Elasticsearch — while helping establish governance and rule-based controls for compliance and responsible AI use.</p>
+
+      <p>Improved performance and reliability by tuning Oracle SQL queries, optimizing Hibernate/JPA usage, and introducing Caffeine caching, cutting backend latency by 35%. Maintained CI/CD pipelines using GitLab CI/CD, Docker, Kubernetes, and Liquibase, and owned production monitoring and incident response with Splunk. Collaborated cross-functionally and mentored junior engineers on system design and debugging practices.</p>
+    </div>
+
+    <div class="card">
+      <h3>Teaching Assistant</h3>
+      <div class="meta">Indian Institute of Technology, Kharagpur · Jul 2022 – Jun 2023</div>
+      <p>Programming and Data Structures Lab (CS19101), Autumn 2022-23 — supported lab sessions and evaluated assignments for undergraduate coursework.</p>
+      <p>Computational Geometry (CS60064), Spring 2022-23 — assisted with grading, doubt-clearing sessions, and algorithmic problem sets for a graduate-level course.</p>
     </div>
   </section>
 
-  <!-- Skills -->
   <section id="skills">
-    <h2>Skills</h2>
+    <div class="eyebrow">03 — skills</div>
+    <div class="section-rule"></div>
     <div class="skills-grid">
       <div class="skill-card">
-        <div class="skill-title">Core Backend & Java</div>
-        <div class="skill-list">Java (8,11,17,21) · Spring Boot · Spring MVC · Spring Security · Hibernate (JPA) · RESTful APIs · Microservices · API Design · Caching</div>
+        <div class="skill-title">Core Backend &amp; Java</div>
+        <div class="skill-list">Java (8, 11, 17, 21) · Spring Boot · Spring MVC · Spring Security · Hibernate (JPA) · RESTful APIs · Microservices · API Design · Caching</div>
       </div>
-
       <div class="skill-card">
-        <div class="skill-title">Distributed Systems & Messaging</div>
-        <div class="skill-list">Apache Kafka · Event-Driven Architecture · Asynchronous Processing · Fault Tolerance · High Availability</div>
+        <div class="skill-title">Distributed Systems &amp; Messaging</div>
+        <div class="skill-list">Apache Kafka · WebSocket · Event-Driven Architecture · Asynchronous Processing · Concurrency &amp; Multithreading · Fault Tolerance · High Availability</div>
       </div>
-
       <div class="skill-card">
-        <div class="skill-title">Databases & Data Management</div>
+        <div class="skill-title">Databases &amp; Data Management</div>
         <div class="skill-list">Oracle SQL · PostgreSQL · Query Optimization · Indexing · Transactions · Caffeine Cache</div>
       </div>
-
       <div class="skill-card">
-        <div class="skill-title">Frontend & Full-Stack</div>
+        <div class="skill-title">Cloud &amp; DevOps</div>
+        <div class="skill-list">AWS (S3, EC2) · Docker · Kubernetes · GitLab CI/CD · Liquibase · Maven · GCP App Engine</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-title">Frontend &amp; Full-Stack</div>
         <div class="skill-list">Angular · JavaScript · HTML5 · CSS3 · REST API Integration</div>
       </div>
-
-      <div class="skill-card">
-        <div class="skill-title">DevOps, Cloud & CI/CD</div>
-        <div class="skill-list">Docker · Kubernetes · GitLab CI/CD · Liquibase · Maven · AWS S3 · GCP App Engine</div>
-      </div>
-
       <div class="skill-card">
         <div class="skill-title">AI / GenAI</div>
-        <div class="skill-list">LLM Integration (Claude, GPT) · Semantic Search · Vector Embeddings · RAG</div>
+        <div class="skill-list">LLM Integration (Claude, GPT) · RAG · Semantic Search · Vector Embeddings</div>
       </div>
-
       <div class="skill-card">
-        <div class="skill-title">Testing & Quality</div>
-        <div class="skill-list">JUnit · Mockito · Unit & Integration Testing · Code Reviews</div>
+        <div class="skill-title">Testing &amp; Quality</div>
+        <div class="skill-list">JUnit · Mockito · Unit &amp; Integration Testing · Code Reviews</div>
       </div>
-
       <div class="skill-card">
-        <div class="skill-title">Monitoring & Production Support</div>
+        <div class="skill-title">Monitoring &amp; Production Support</div>
         <div class="skill-list">Splunk · Monitoring · Incident Debugging · Performance Tuning</div>
       </div>
-
       <div class="skill-card">
-        <div class="skill-title">Computer Science Fundamentals</div>
-        <div class="skill-list">Data Structures & Algorithms · OOP · Design Patterns · Concurrency</div>
+        <div class="skill-title">CS Fundamentals</div>
+        <div class="skill-list">Data Structures &amp; Algorithms · OOP · Design Patterns · Concurrency</div>
       </div>
     </div>
   </section>
 
-  <!-- Projects -->
   <section id="projects">
-    <h2>Projects</h2>
+    <div class="eyebrow">04 — projects</div>
+    <div class="section-rule"></div>
     <div class="projects-grid">
       <div class="project-card">
         <a href="https://github.com/prosenjitkundu/SAT-SOLVER" target="_blank" rel="noopener"><img class="project-thumb" alt="SAT-SOLVER" src="https://opengraph.githubassets.com/1/prosenjitkundu/SAT-SOLVER" /></a>
         <div class="project-caption">
-          <div class="project-title">@prosenjitkundu/SAT-SOLVER</div>
-          <div class="project-desc">Implemented Mastermind by modeling game constraints as Boolean formulas and solving with a SAT solver; supports codemaker and intelligent codebreaker (with/without color repetition).</div>
+          <div class="project-title">SAT-SOLVER</div>
+          <div class="project-desc">Modeled Mastermind game constraints as Boolean formulas and solved with a SAT solver; supports codemaker and intelligent codebreaker (with/without color repetition).</div>
         </div>
       </div>
-
       <div class="project-card">
         <a href="https://github.com/prosenjitkundu/Image-Classification" target="_blank" rel="noopener"><img class="project-thumb" alt="Image Classification" src="https://opengraph.githubassets.com/1/prosenjitkundu/Image-Classification" /></a>
         <div class="project-caption">
-          <div class="project-title">@prosenjitkundu/Image-Classification</div>
-          <div class="project-desc">End-to-end land use image classification using custom CNNs and fine-tuned ResNet18 (EuroSAT).</div>
+          <div class="project-title">Image-Classification</div>
+          <div class="project-desc">End-to-end land use image classification using custom CNNs and fine-tuned ResNet18 on the EuroSAT dataset.</div>
         </div>
       </div>
-
       <div class="project-card">
         <a href="https://github.com/prosenjitkundu/Covid-data-Extraction" target="_blank" rel="noopener"><img class="project-thumb" alt="Covid data extraction" src="https://opengraph.githubassets.com/1/prosenjitkundu/Covid-data-Extraction" /></a>
         <div class="project-caption">
-          <div class="project-title">@prosenjitkundu/Covid-data-Extraction</div>
-          <div class="project-desc">Real-time data extraction pipeline using Python + PLY to parse and map COVID-19 stats from HTML.</div>
+          <div class="project-title">Covid-data-Extraction</div>
+          <div class="project-desc">Real-time data extraction pipeline using Python + PLY to parse and map COVID-19 statistics from HTML sources.</div>
         </div>
       </div>
-
       <div class="project-card">
         <a href="https://github.com/prosenjitkundu/Socket-Programming" target="_blank" rel="noopener"><img class="project-thumb" alt="Socket Programming" src="https://opengraph.githubassets.com/1/prosenjitkundu/Socket-Programming" /></a>
         <div class="project-caption">
-          <div class="project-title">@prosenjitkundu/Socket-Programming</div>
+          <div class="project-title">Socket-Programming</div>
           <div class="project-desc">Concurrent multi-client file editor built with TCP sockets and POSIX threads; fine-grained locking and FTP-style operations.</div>
         </div>
       </div>
-
       <div class="project-card">
         <a href="https://github.com/prosenjitkundu/DexterPay-UI" target="_blank" rel="noopener"><img class="project-thumb" alt="DexterPay-UI" src="https://opengraph.githubassets.com/1/prosenjitkundu/DexterPay-UI" /></a>
         <div class="project-caption">
-          <div class="project-title">@prosenjitkundu/DexterPay-UI</div>
-          <div class="project-desc">Startup idea: building a Payment Gateway similar to RazorPay (UI & prototype).</div>
+          <div class="project-title">DexterPay-UI</div>
+          <div class="project-desc">Payment gateway concept inspired by RazorPay — UI and prototype for a startup idea.</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Education -->
   <section id="education">
-    <h2>Education</h2>
+    <div class="eyebrow">05 — education</div>
+    <div class="section-rule"></div>
     <div class="card">
       <h3>Indian Institute of Technology Kharagpur</h3>
-      <div class="meta">M.Tech in Computer Science & Engineering | 2021 – 2023</div>
-      <p>DGPA: 8.72 / 10</p>
-      <div class="coursework"><strong>Relevant Coursework:</strong> Design and Analysis of Algorithms, Computational Geometry, Database Management Systems, Advanced Operating Systems, Artificial Intelligence, Machine Learning, Deep Learning</div>
+      <div class="meta">M.Tech, Computer Science &amp; Engineering · 2021 – 2023 · DGPA 8.72 / 10</div>
+      <p><strong style="color:var(--text-primary)">Relevant coursework:</strong> Design and Analysis of Algorithms, Computational Geometry, Database Management Systems, Advanced Operating Systems, Artificial Intelligence, Machine Learning, Deep Learning</p>
     </div>
-
     <div class="card">
       <h3>Cooch Behar Government Engineering College</h3>
-      <div class="meta">B.Tech in Computer Science & Engineering | 2016 – 2020</div>
-      <p>DGPA: 8.35 / 10</p>
-      <div class="coursework"><strong>Relevant Coursework:</strong> Operating Systems, Computer Organization, Object-Oriented Programming, Theory of Computation, Data Structures & Algorithms, Computer Networking</div>
+      <div class="meta">B.Tech, Computer Science &amp; Engineering · 2016 – 2020 · DGPA 8.35 / 10</div>
+      <p><strong style="color:var(--text-primary)">Relevant coursework:</strong> Operating Systems, Computer Organization, Object-Oriented Programming, Theory of Computation, Data Structures &amp; Algorithms, Computer Networking</p>
     </div>
   </section>
 
-  <!-- Certifications & Achievements -->
   <section id="certification">
-    <h2>Certifications & Achievements</h2>
+    <div class="eyebrow">06 — certifications &amp; achievements</div>
+    <div class="section-rule"></div>
     <div class="cert-grid">
       <div class="cert-card">
-        <div class="cert-badge" aria-hidden="true">
-          <svg width="72" height="44" viewBox="0 0 72 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NPTEL">
-            <rect rx="6" width="72" height="44" fill="#0B3D91"/>
-            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial" font-size="11" fill="#fff">NPTEL</text>
-          </svg>
+        <div class="cert-badge" style="background:#0B3D91;">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z"/></svg>
         </div>
         <div class="cert-info">
-          <div class="cert-title">Data Base Management System (DBMS)</div>
+          <div class="cert-title">Database Management System (DBMS)</div>
           <div class="cert-meta">NPTEL · IIT Kharagpur · Feb–Apr 2019 · Elite</div>
-          <div class="cert-links">Roll No: NPTEL19CS12S41270154 · <a href="https://drive.google.com/file/d/1bfb83wKRctYDpvqN1pCeIgUZLHF_rgfA/view?usp=sharing" target="_blank" rel="noopener">Certificate</a></div>
+          <div class="cert-links">Roll No: NPTEL19CS12S41270154 · <a href="https://drive.google.com/file/d/1bfb83wKRctYDpvqN1pCeIgUZLHF_rgfA/view?usp=sharing" target="_blank" rel="noopener">Certificate ↗</a></div>
         </div>
       </div>
-
       <div class="cert-card">
-        <div class="cert-badge" aria-hidden="true">
-          <svg width="72" height="44" viewBox="0 0 72 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Coursera">
-            <rect rx="6" width="72" height="44" fill="#2A73CC"/>
-            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial" font-size="10" fill="#fff">Coursera</text>
-          </svg>
+        <div class="cert-badge" style="background:#2A73CC;">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 12l4 4 4-8"/></svg>
         </div>
         <div class="cert-info">
           <div class="cert-title">Google Data Analytics — Professional Certificate</div>
-          <div class="cert-meta">Google (via Coursera) · Completed June 15, 2021</div>
-          <div class="cert-links">Skills: Spreadsheets, SQL, Tableau, R · <a href="https://coursera.org/verify/professional-cert/N3RB9RULB6QS" target="_blank" rel="noopener">Verification</a></div>
+          <div class="cert-meta">Google (via Coursera) · Completed Jun 2021</div>
+          <div class="cert-links">Spreadsheets · SQL · Tableau · R · <a href="https://coursera.org/verify/professional-cert/N3RB9RULB6QS" target="_blank" rel="noopener">Verify ↗</a></div>
         </div>
       </div>
-
       <div class="cert-card">
-        <div class="cert-badge" aria-hidden="true">
-          <svg width="72" height="44" viewBox="0 0 72 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DeepLearning.AI / Stanford">
-            <rect rx="6" width="72" height="44" fill="#111827"/>
-            <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial" font-size="8.5" fill="#fff">DeepLearning.AI</text>
-            <text x="50%" y="75%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial" font-size="7" fill="#cbd5e1">Stanford</text>
-          </svg>
+        <div class="cert-badge" style="background:#111827;">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><circle cx="12" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><path d="M12 8v6M12 14l-6 4M12 14l6 4"/></svg>
         </div>
         <div class="cert-info">
           <div class="cert-title">Machine Learning — Specialization</div>
-          <div class="cert-meta">DeepLearning.AI & Stanford Online (via Coursera) · Completed Aug 4, 2022</div>
-          <div class="cert-links">Instructor: Andrew Ng · <a href="https://coursera.org/verify/specialization/YLX6R87CVFPB" target="_blank" rel="noopener">Verification</a></div>
+          <div class="cert-meta">DeepLearning.AI &amp; Stanford Online · Completed Aug 2022</div>
+          <div class="cert-links">Instructor: Andrew Ng · <a href="https://coursera.org/verify/specialization/YLX6R87CVFPB" target="_blank" rel="noopener">Verify ↗</a></div>
         </div>
       </div>
-
       <div class="cert-card">
-        <div class="cert-badge" aria-hidden="true">
-          <svg width="72" height="44" viewBox="0 0 72 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LeetCode">
-            <rect rx="6" width="72" height="44" fill="#FFA116"/>
-            <text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial" font-size="10" fill="#111">LeetCode</text>
-          </svg>
+        <div class="cert-badge" style="background:#FFA116;">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8"><path d="M14 3l7 7-4 4-7-7 4-4zM2 21l10-10"/></svg>
         </div>
         <div class="cert-info">
           <div class="cert-title">LeetCode — Competitive Programming</div>
-          <div class="cert-meta">Solved 900+ problems · Peak rating: 1576 · Top 4% worldwide</div>
-          <div class="cert-links"><a href="https://leetcode.com/u/_pros_" target="_blank" rel="noopener">View profile</a></div>
+          <div class="cert-meta">900+ problems solved · Peak rating 1576 · Top 4% worldwide</div>
+          <div class="cert-links"><a href="https://leetcode.com/u/_pros_" target="_blank" rel="noopener">View profile ↗</a></div>
         </div>
       </div>
-
       <div class="cert-card">
-        <div class="cert-badge" aria-hidden="true">
-          <svg width="72" height="44" viewBox="0 0 72 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GATE">
-            <rect rx="6" width="72" height="44" fill="#8B2DFF"/>
-            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial" font-size="10" fill="#fff">GATE</text>
-          </svg>
+        <div class="cert-badge" style="background:#8B2DFF;">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M12 2l9 4.5v9L12 20l-9-4.5v-9L12 2z"/></svg>
         </div>
         <div class="cert-info">
           <div class="cert-title">GATE CSE 2021</div>
           <div class="cert-meta">All India Rank (AIR) 378 · Top 0.4 percentile</div>
-          <div class="cert-links">Year: 2021</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Positions of Responsibility -->
   <section id="por">
-    <h2>Positions of Responsibility</h2>
+    <div class="eyebrow">07 — leadership &amp; involvement</div>
+    <div class="section-rule"></div>
     <div class="card">
-      <h3>Roles & Involvements</h3>
       <ul class="por-list">
         <li>
-          <span class="por-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M4 19h16M4 4h16v8H4z"/></svg></span>
-          <span class="por-role">Teaching Assistant</span>
-          <span class="por-org"> — Programming and Data Structures (CS19003), IIT KGP</span>
-          <span class="por-date"> — Autumn '22</span>
+          <span class="por-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19h16M4 4h16v8H4z"/></svg></span>
+          <span class="por-text"><span class="por-role">Teaching Assistant</span> — Programming and Data Structures (CS19003), IIT Kharagpur <span class="por-date">· Autumn '22</span></span>
         </li>
-
         <li>
-          <span class="por-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 21l9-18 9 18H3z"/></svg></span>
-          <span class="por-role">Teaching Assistant</span>
-          <span class="por-org"> — Computational Geometry (CS60064), IIT KGP</span>
-          <span class="por-date"> — Spring '23</span>
+          <span class="por-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21l9-18 9 18H3z"/></svg></span>
+          <span class="por-text"><span class="por-role">Teaching Assistant</span> — Computational Geometry (CS60064), IIT Kharagpur <span class="por-date">· Spring '23</span></span>
         </li>
-
         <li>
-          <span class="por-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M14 3l7 7-4 4-7-7 4-4zM2 21l10-10"/></svg></span>
-          <span class="por-role">Senate Member</span>
-          <span class="por-org"> — Educational Regulatory, Cooch Behar Government Engineering College (CGEC)</span>
+          <span class="por-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3l7 7-4 4-7-7 4-4zM2 21l10-10"/></svg></span>
+          <span class="por-text"><span class="por-role">Senate Member</span> — Educational Regulatory, Cooch Behar Government Engineering College</span>
         </li>
-
         <li>
-          <span class="por-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M16 18l6-6-6-6M8 6L2 12l6 6"/></svg></span>
-          <span class="por-role">Member</span>
-          <span class="por-org"> — Coding Club, Cooch Behar Government Engineering College (CGEC)</span>
+          <span class="por-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 18l6-6-6-6M8 6L2 12l6 6"/></svg></span>
+          <span class="por-text"><span class="por-role">Member</span> — Coding Club, Cooch Behar Government Engineering College</span>
         </li>
-
         <li>
-          <span class="por-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M2 20s4-4 7-4 7 4 7 4"/><path d="M12 12a4 4 0 10-4-4"/></svg></span>
-          <span class="por-role">Volunteer</span>
-          <span class="por-org"> — India Tribal Care Trust ('Spread smiles by spreading education')</span>
-          <span class="por-date"> — Dec 2022 - May 2023</span>
+          <span class="por-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 20s4-4 7-4 7 4 7 4"/><path d="M12 12a4 4 0 10-4-4"/></svg></span>
+          <span class="por-text"><span class="por-role">Volunteer</span> — India Tribal Care Trust, "Spread smiles by spreading education" <span class="por-date">· Dec 2022 – May 2023</span></span>
         </li>
       </ul>
     </div>
   </section>
 
-  <div id="contact" style="height:1px;margin-top:-80px;visibility:hidden;"></div>
-
-  <footer>© 2026 Prosenjit Kundu · Backend & Distributed Systems Engineer</footer>
+  <footer>© 2026 Prosenjit Kundu · Backend &amp; Distributed Systems Engineer</footer>
 </div>
 
 <script>
@@ -561,7 +522,6 @@
   hamburger.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleSidebar(); }});
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && sidebar.classList.contains('active')) closeSidebar(); });
 
-  // smooth scrolling + close sidebar
   sidebar.querySelectorAll('a[data-target]').forEach(a=>{
     a.addEventListener('click', function(ev){
       ev.preventDefault();
@@ -571,16 +531,6 @@
       const el=document.getElementById(target);
       if(el){ const yOffset=-20; const y=el.getBoundingClientRect().top+window.pageYOffset+yOffset; window.scrollTo({top:y,behavior:'smooth'}); }
       setTimeout(closeSidebar,200);
-    });
-  });
-
-  document.querySelectorAll('a[href^="#"]').forEach(a=>{
-    a.addEventListener('click', (ev)=>{
-      const href=a.getAttribute('href');
-      if(href && href.startsWith('#')){
-        const id=href.slice(1); const el=document.getElementById(id);
-        if(el){ ev.preventDefault(); const y=el.getBoundingClientRect().top+window.pageYOffset-20; window.scrollTo({top:y,behavior:'smooth'}); closeSidebar(); }
-      }
     });
   });
 
